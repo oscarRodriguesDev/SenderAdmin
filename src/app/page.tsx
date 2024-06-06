@@ -8,9 +8,13 @@ import { Faq } from "@/components/Faq";
 import { Cta } from "@/components/Cta";
 
 import { benefitOne, benefitTwo } from "@/components/data";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
+import { PopupWidget } from "@/components/PopupWidget";
 export default function Home() {
   return (
     <Container>
+       <Navbar/>
       <Hero />
       <SectionTitle
         preTitle="Nextly Benefits"
@@ -52,6 +56,8 @@ export default function Home() {
 
       <Faq />
       <Cta />
+      <Footer/>
+          <PopupWidget/>
     </Container>
   );
 }

@@ -30,18 +30,14 @@ const auth = getAuth();
 
 //função para logar com email
 export async function loginMail(cpf: string, password: string) {
-  let email = `${cpf}@sender.com.br`;
-
-  await signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed in
-      const user = userCredential.user;
-      return 'logou';
-      // ...
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      return 'não logou';
-    });
+  try {
+    const email = `${cpf}@sender.com.br`;
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    window.location.href = "/aplication";
+    return user; // Retorna o usuário autenticado
+  } catch (error) {
+    console.error('Erro ao fazer login:', error);
+    throw error; // Lança o erro para que possa ser tratado no componente de login
+  }
 }
