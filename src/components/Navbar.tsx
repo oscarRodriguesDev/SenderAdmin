@@ -7,16 +7,16 @@ import { Login } from "./login";
 
 export const Navbar = () => {
   const navigation = [
-    "Product",
-    "Features",
-    "Pricing",
-    "Company",
-    "Blog",
-  ];
+    "Produto",
+    "Como Funciona",
+    "Sobre Nós",
+    "Contato",
+  
+  ]; 
 
   return (
-    <div className="w-full">
-      <nav className="container relative flex flex-wrap items-center justify-between p-8 mx-auto lg:justify-between xl:px-0">
+    <div className="w-full max-w-[1900px]">
+      <nav className=" container relative flex flex-wrap items-center justify-between p-8 mx-auto lg:justify-between xl:px-0 h-auto">
         {/* Logo  */}
         <Disclosure>
           {({ open }) => (
@@ -30,7 +30,7 @@ export const Navbar = () => {
                         alt="N"
                         width="50"
                         height="50"
-                        className="w-8"
+                        className="w-8 rounded"
                       />
                     </span>
                     <span>Sender</span>
@@ -71,6 +71,8 @@ export const Navbar = () => {
                         Get Started
                     </Link>
                   </>
+
+              
                 </Disclosure.Panel>
               </div>
             </>

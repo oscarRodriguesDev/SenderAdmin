@@ -6,7 +6,6 @@ import { Video } from "@/components/Video";
 import { Testimonials } from "@/components/Testimonials";
 import { Faq } from "@/components/Faq";
 import { Cta } from "@/components/Cta";
-
 import { benefitOne, benefitTwo } from "@/components/data";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -14,7 +13,10 @@ import { PopupWidget } from "@/components/PopupWidget";
 export default function Home() {
   return (
     <Container>
+      <div className="w-full max-w-[1800px] bg-black absolute top-0 mb-56 h-auto">
        <Navbar/>
+
+      </div>
       <Hero />
       <SectionTitle
         preTitle="Nextly Benefits"

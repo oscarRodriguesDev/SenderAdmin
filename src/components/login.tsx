@@ -27,20 +27,20 @@ export function Login() {
             type="text"
             placeholder="CPF"
             required
-            className="flex-1 px-2 py-1 border border-gray-300 rounded"
+            className="flex-1 px-2 py-0.5 border border-gray-300 rounded text-xs"
             value={user}
             onChange={(e) => setUser(e.target.value)}
           />
           <input
             type="password"
             placeholder="********"
-            className="flex-1 px-2 py-1 border border-gray-300 rounded"
+            className="flex-1 px-2 py-0.5 border border-gray-300 rounded text-xs"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
           />
           <button
             type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="px-2 py-0.5 bg-blue-500 text-white rounded hover:bg-blue-600"
             onClick={(e) => {
               e.preventDefault();
               logar(user, senha);
