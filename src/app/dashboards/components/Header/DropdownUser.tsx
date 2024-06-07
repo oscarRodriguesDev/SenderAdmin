@@ -1,13 +1,22 @@
-import { useState } from "react";
+
+import { useState} from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ClickOutside from "../../components/ClickOutside";
+import { userLogout} from "@/services/auth";
+
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
+  async function logout(){
+    alert("Saindo...");
+   await userLogout()
+   window.location.href='/'
+  }
+ 
   return (
-    <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
+    <ClickOutside onClick={() => setDropdownOpen(!DropdownUser)} className="relative">
       <Link
         onClick={() => setDropdownOpen(!dropdownOpen)}
         className="flex items-center gap-4"
@@ -28,7 +37,7 @@ const DropdownUser = () => {
         </span>
 
         <span className="flex items-center gap-2 font-medium text-dark dark:text-dark-6">
-          <span className="hidden lg:block">Jhon Smith</span>
+          <span className="hidden lg:block">User Admin</span>
 
           <svg
             className={`fill-current duration-200 ease-in ${dropdownOpen && "rotate-180"}`}
@@ -72,10 +81,10 @@ const DropdownUser = () => {
 
             <span className="block">
               <span className="block font-medium text-dark dark:text-white">
-                Jhon Smith
+               User Admin
               </span>
               <span className="block font-medium text-dark-5 dark:text-dark-6">
-                jonson@nextadmin.com
+                06230124645@sender.com.br
               </span>
             </span>
           </div>
@@ -141,7 +150,9 @@ const DropdownUser = () => {
             </li>
           </ul>
           <div className="p-2.5">
-            <button className="flex w-full items-center gap-2.5 rounded-[7px] p-2.5 text-sm font-medium text-dark-4 duration-300 ease-in-out hover:bg-gray-2 hover:text-dark dark:text-dark-6 dark:hover:bg-dark-3 dark:hover:text-white lg:text-base">
+            <button className="flex w-full items-center gap-2.5 rounded-[7px] p-2.5 text-sm font-medium text-dark-4 duration-300 ease-in-out hover:bg-gray-2 hover:text-dark dark:text-dark-6 dark:hover:bg-dark-3 dark:hover:text-white lg:text-base"
+              onClick={() => {logout()}}
+            >
               <svg
                 className="fill-current"
                 width="18"
@@ -166,7 +177,7 @@ const DropdownUser = () => {
                   </clipPath>
                 </defs>
               </svg>
-              Logout
+              Sair
             </button>
           </div>
         </div>

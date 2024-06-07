@@ -12,6 +12,7 @@ export function Login() {
     try {
       const res = await loginMail(email, senha);
       alert('vai pra outra rota')
+      window.location.href='/'
 
     } catch (error) {
       // Trate os erros de login aqui
