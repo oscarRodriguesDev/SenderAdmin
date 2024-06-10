@@ -3,6 +3,7 @@ import DarkModeSwitcher from "./DarkModeSwitcher";
 import DropdownNotification from "./DropdownNotification";
 import DropdownUser from "./DropdownUser";
 import Image from "next/image";
+
 import SearchForm from "../../components/Header/SearchForm";
 
 const Header = (props: {
@@ -54,24 +55,28 @@ const Header = (props: {
               </span>
             </span>
           </button>
-          {/* <!-- Hamburger Toggle BTN --> */}
-
-          <Link className="block flex-shrink-0 lg:hidden" href="/">
-            <Image
-              width={32}
-              height={32}
-              src={"/images/logo/logo-icon.svg"}
-              alt="Logo"
-            />
-          </Link>
+            <h1>Sender</h1>
+            <Link className="block flex-shrink-0" href="/">
+              <Image
+                width={40}
+                height={40}
+                src={"/images/logo/logo.svg"}
+                alt="Logo"
+              />
+            </Link>
         </div>
 
         <div className="hidden xl:block">
           <div>
-            <h1 className="mb-0.5 text-heading-5 font-bold text-dark dark:text-white">
-              Sender
-            </h1>
-            <p className="font-medium">Sender Admin Dashboard</p>
+            <div className="w-full flex flex-row items-center justify-center gap-2">
+              <Image
+                width={40}
+                height={40}
+                src={"/images/logo/logo2.svg"}
+                alt="Logo"
+              />
+              <p className="font-medium">Sender Admin Dashboard</p>
+            </div>
           </div>
         </div>
 

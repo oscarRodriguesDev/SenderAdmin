@@ -1,10 +1,9 @@
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-
+import Breadcrumb from "@/app/dashboards/components/Breadcrumbs/Breadcrumb";
 import { Metadata } from "next";
-import DefaultLayout from "@/components/Layouts/DefaultLaout";
-import SelectGroupOne from "@/components/FormElements/SelectGroup/SelectGroupOne";
+import DefaultLayout from "@/app/dashboards/components/Layouts/DefaultLaout";
+import SelectGroupOne from "@/app/dashboards/components/FormElements/SelectGroup/SelectGroupOne";
 import Link from "next/link";
-import InputGroup from "@/components/FormElements/InputGroup";
+import InputGroup from "@/app/dashboards/components/FormElements/InputGroup";
 
 export const metadata: Metadata = {
   title: "Next.js Form Layout Page | NextAdmin - Next.js Dashboard Kit",

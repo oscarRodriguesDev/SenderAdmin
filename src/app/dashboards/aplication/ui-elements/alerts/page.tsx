@@ -1,9 +1,9 @@
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import Breadcrumb from "@/app/dashboards/components/Breadcrumbs/Breadcrumb";
 import { Metadata } from "next";
-import DefaultLayout from "@/components/Layouts/DefaultLaout";
-import AlertError from "@/components/Alerts/AlertError";
-import AlertWarning from "@/components/Alerts/AlertWarning";
-import AlertSuccess from "@/components/Alerts/AlertSuccess";
+import DefaultLayout from "@/app/dashboards/components/Layouts/DefaultLaout";
+import AlertError from "@/app/dashboards/components/Alerts/AlertError";
+import AlertWarning from "@/app/dashboards/components/Alerts/AlertWarning";
+import AlertSuccess from "@/app/dashboards/components/Alerts/AlertSuccess";
 
 export const metadata: Metadata = {
   title: "Next.js Alerts Page | NextAdmin - Next.js Dashboard Kit",
