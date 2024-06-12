@@ -32,7 +32,8 @@ export async function createUserEmail(email: string, password: string): Promise<
 }
 
 /* Esta função permite que o usuario faça login utilizando o email e senha criados anteriormente */
-export async function userLogin(email: string, password: string): Promise<boolean> {
+export async function userLogin(cpf: string, password: string): Promise<boolean> {
+  const  email = `${cpf}@sender.com.br`
   try {
     const userCredential = await signInWithEmailAndPassword(getAuth(), email, password);
     const user = userCredential.user;
@@ -46,10 +47,11 @@ export async function userLogin(email: string, password: string): Promise<boolea
 export async function userLogout(): Promise<boolean> {
   try {
     await signOut(getAuth());
-    window.location.href='/'
-    return true;
+    redirect('/')
+   
     } catch (error) {
-      return false;
+      console.log(error)
+      return false
       }
 }
 

@@ -1,9 +1,9 @@
-
+'use client'
 import { useState} from "react";
 import Link from "next/link";
 import Image from "next/image";
-import ClickOutside from "../../components/ClickOutside";
-import { userLogout} from "@/services/auth";
+import ClickOutside from "../ClickOutside";
+import { userLogout } from "@/app/auth/authEmail";
 
 
 const DropdownUser = () => {

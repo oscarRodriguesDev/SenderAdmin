@@ -4,7 +4,7 @@ import DropdownNotification from "./DropdownNotification";
 import DropdownUser from "./DropdownUser";
 import Image from "next/image";
 
-import SearchForm from "../../components/Header/SearchForm";
+import SearchForm from "./SearchForm";
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;

@@ -1,22 +1,23 @@
 'use client'
 import { useState } from "react";
-import { loginMail } from "@/services/auth";
-
+import { userLogin } from "@/app/auth/authEmail";
+import { useRouter } from "next/navigation";
 
 export function Login() {
   const [user, setUser] = useState<string>('');
   const [senha, setSenha] = useState<string>('');
+  const router = useRouter();
 
-
-  async function logar(email: string, senha: string) {
+  async function logar(cpf: string, senha: string) {
     try {
-      const res = await loginMail(email, senha);
-      alert('vai pra outra rota')
-      window.location.href='/'
-
+      const res = await userLogin(cpf, senha);
+      if (res) {
+        router.push('/dashboards/aplication');
+      } else {
+        alert('Erro ao fazer login');
+      }
     } catch (error) {
-      // Trate os erros de login aqui
-    alert('Erro ao fazer login');
+      alert('Erro ao fazer login');
     }
   }
 

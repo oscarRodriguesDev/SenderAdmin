@@ -5,8 +5,8 @@ import ChartTwo from "../Charts/ChartTwo";
 import ChatCard from "../Chat/ChatCard";
 import TableOne from "../Tables/TableOne";
 import MapOne from "../Maps/MapOne";
-import DataStatsOne from "../../components/DataStats/DataStatsOne";
-import ChartOne from "../../components/Charts/ChartOne";
+import DataStatsOne from "../DataStats/DataStatsOne";
+import ChartOne from "../Charts/ChartOne";
 import { useState, useEffect } from "react";
 import { getAuthStatus } from "@/app/auth/authEmail";
 
@@ -26,28 +26,27 @@ const ECommerce: React.FC = () => {
     checkAuthStatus();
   }, []);
   return (
-    <>
+    <div>
       {logado ? (
         <div>
-          <DataStatsOne />
-          <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-9 2xl:gap-7.5">
-            <ChartOne />
+          <h1 className=" w-full text-center mb-8 text-4xl">Atestados Recebidos</h1>
+          {/*  <DataStatsOne /> */}
+          {/*   <div className=" w-full mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-9 2xl:gap-7.5"> */}
+          {/* <ChartOne />
             <ChartTwo />
             <ChartThree />
-            <MapOne />
-            <div className="col-span-12 xl:col-span-8">
-              <TableOne />
-            </div>
-            <ChatCard />
-          </div>
+            <MapOne /> */}
+          <TableOne />
+          <div className="col-span-12 xl:col-span-8"></div>
+          {/*  <ChatCard /> */}
+          {/*  </div> */}
         </div>
       ) : (
         <div>
-        
-           <h1>No user Logged</h1>
+          <h1>No user Logged</h1>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
