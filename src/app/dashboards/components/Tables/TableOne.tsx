@@ -12,7 +12,7 @@ interface dataProps {
 }
 
 export const fetchData = async (): Promise<dataProps[]> => {
-  const response = await fetch('http://localhost:3000/api/fake');
+  const response = await fetch(`${process.env.NEXT_PUBLIC_URL}api/fake`);//http://localhost:3000/api/fake
 
   if (!response.ok) {
     throw new Error('Failed to fetch data');
