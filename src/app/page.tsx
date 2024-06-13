@@ -5,6 +5,8 @@ import { Navbar } from "@/components/Navbar";
 import { useState, useEffect } from "react";
 import { getAuthStatus } from "./auth/authEmail";
 import HomeDashboard from "./dashboards/aplication/page";
+import { AuthProvider } from "./auth/AuthContext";
+import Teste from "./teste/page";
 
 export default function Home() {
   const [estado, setEstado] = useState<boolean | null>(null);
@@ -35,7 +37,12 @@ export default function Home() {
         </Container>
       ) : (
         <div>
+           
           <HomeDashboard />
+         
+          
+
+      
         </div>
       )}
     </>

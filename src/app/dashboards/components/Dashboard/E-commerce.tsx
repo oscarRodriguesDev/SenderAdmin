@@ -9,6 +9,7 @@ import DataStatsOne from "../DataStats/DataStatsOne";
 import ChartOne from "../Charts/ChartOne";
 import { useState, useEffect } from "react";
 import { getAuthStatus } from "@/app/auth/authEmail";
+import { AuthProvider } from "@/app/auth/AuthContext";
 
 const ECommerce: React.FC = () => {
   const [logado, setLogado] = useState(false);
@@ -22,7 +23,6 @@ const ECommerce: React.FC = () => {
         setLogado(false);
       }
     };
-
     checkAuthStatus();
   }, []);
   return (

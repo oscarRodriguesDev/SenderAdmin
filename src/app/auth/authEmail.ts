@@ -81,3 +81,15 @@ export async function getAuthStatus(): Promise<AuthStatus> {
     });
   });
 }
+
+export async function isUserLoggedIn(): Promise<boolean> {
+  return new Promise((resolve) => {
+    onAuthStateChanged(getAuth(), (user) => {
+      console.log(getAuth().currentUser)
+      resolve(!!user);
+    });
+  });
+}
+ 
+
+//recuperar o currentUser firebase.auth().currentUser

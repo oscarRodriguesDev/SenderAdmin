@@ -17,7 +17,7 @@ export const fetchData = async (): Promise<dataProps[]> => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_URL}api/atestados`);//http://localhost:3000/api/fake
 
   if (!response.ok) {
-    throw new Error('Failed to fetch data');
+    throw new Error(`Não foi possivel recuperar dados`);
   }
 
   const data = await response.json();
