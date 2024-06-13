@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from "react";
 import { ImFilePicture } from "react-icons/im";
+import { AuthStatus, getAuthStatus } from "@/app/auth/authEmail";
 
 interface dataProps {
   CPF: string;
@@ -12,7 +13,8 @@ interface dataProps {
 }
 
 export const fetchData = async (): Promise<dataProps[]> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_URL}api/fake`);//http://localhost:3000/api/fake
+ console.log(getAuthStatus())
+  const response = await fetch(`${process.env.NEXT_PUBLIC_URL}api/atestados`);//http://localhost:3000/api/fake
 
   if (!response.ok) {
     throw new Error('Failed to fetch data');
