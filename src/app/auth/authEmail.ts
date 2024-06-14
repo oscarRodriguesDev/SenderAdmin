@@ -31,10 +31,36 @@ export async function createUserEmail(email: string, password: string): Promise<
   }
 }
 
+// Função para buscar a lista de e-mails autorizados do banco de dados
+async function getAuthorizedEmails(): Promise<string[]> {
+  const db = getDatabase();
+  const authorizedEmailsRef = ref(db, 'adm');
+  const snapshot = await get(authorizedEmailsRef);
+  if (snapshot.exists()) {
+    const authorizedEmailsObj = snapshot.val();
+    const authorizedEmailsArray = Object.values(authorizedEmailsObj);
+    return authorizedEmailsArray.map((email: string|any) => email.replace(/'/g, '')); // Remover aspas simples
+  } else {
+    console.error("Lista de e-mails autorizados não encontrada no banco de dados.");
+    return [];
+  }
+}
+
 // Função para login do usuário
 export async function userLogin(cpf: string, password: string): Promise<boolean> {
   const email = `${cpf}@sender.com.br`;
+
   try {
+    // Busca a lista de e-mails autorizados no banco de dados
+    const authorizedEmails = await getAuthorizedEmails();
+
+    // Verifica se o e-mail está na lista de autorizados
+    if (!authorizedEmails.includes(email)) {
+      console.error("E-mail não autorizado para login.");
+      return false;
+    }
+
+    // Tenta fazer o login
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     return true;
   } catch (error) {
@@ -42,7 +68,6 @@ export async function userLogin(cpf: string, password: string): Promise<boolean>
     return false;
   }
 }
-
 // Função para logout do usuário
 export async function userLogout(): Promise<boolean> {
   try {
