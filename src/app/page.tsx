@@ -28,7 +28,8 @@ export default function Home() {
 
   return (
     <>
-      {!estado ? (
+    <AuthProvider>
+    {!estado ? (
         <Container>
           <div className="w-full max-w-[1800px] bg-black absolute top-0 mb-56 h-auto">
             <Navbar />
@@ -45,6 +46,9 @@ export default function Home() {
       
         </div>
       )}
+      
+    </AuthProvider>
+    
     </>
   );
 }

@@ -23,11 +23,12 @@ const ECommerce: React.FC = () => {
         setLogado(false);
       }
     };
-    checkAuthStatus();
+    checkAuthStatus(); 
   }, []);
   return (
     <div>
       {logado ? (
+     
         <div>
           <h1 className=" w-full text-center mb-8 text-4xl">Atestados Recebidos</h1>
           {/*  <DataStatsOne /> */}
@@ -41,6 +42,7 @@ const ECommerce: React.FC = () => {
           {/*  <ChatCard /> */}
           {/*  </div> */}
         </div>
+     
       ) : (
         <div>
           <h1>No user Logged</h1>

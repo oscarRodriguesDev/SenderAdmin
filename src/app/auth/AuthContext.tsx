@@ -14,12 +14,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const checkAuthStatus = async () => {
-      const isLoggedIn = await isUserLoggedIn();
-      setLoggedIn(isLoggedIn);
-      setLoading(false);
+      try {
+        const isLoggedIn = await isUserLoggedIn();
+        setLoggedIn(isLoggedIn);
+      } catch (error) {
+        console.error('Erro ao verificar status de autenticação:', error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-   checkAuthStatus();
+    checkAuthStatus();
   }, []);
 
   return (
@@ -32,10 +37,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export default function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    console.log('contexto indefinido');
     throw new Error('useAuth must be used within an AuthProvider');
   }
-  console.log('contexto ' + context.loggedIn + "encontrado");
   return context;
 }
- 

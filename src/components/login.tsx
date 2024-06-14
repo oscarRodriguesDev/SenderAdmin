@@ -3,6 +3,7 @@ import { useState } from "react";
 import { userLogin } from "@/app/auth/authEmail";
 import { useRouter } from "next/navigation";
 
+
 export function Login() {
   const [user, setUser] = useState<string>('');
   const [senha, setSenha] = useState<string>('');
@@ -22,6 +23,7 @@ export function Login() {
   }
 
   return (
+
     <div className="w-full flex justify-center">
       <form className="w-full flex flex-col space-y-4">
         <div className="flex space-x-2">

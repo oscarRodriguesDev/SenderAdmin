@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { ImFilePicture } from "react-icons/im";
 import { AuthStatus, getAuthStatus } from "@/app/auth/authEmail";
+import { AuthProvider } from "@/app/auth/AuthContext";
 
 interface dataProps {
   CPF: string;
@@ -13,9 +14,8 @@ interface dataProps {
 }
 
 export const fetchData = async (): Promise<dataProps[]> => {
- console.log(getAuthStatus())
-  const response = await fetch(`${process.env.NEXT_PUBLIC_URL}api/atestados`);//http://localhost:3000/api/fake
 
+  const response = await fetch(`${process.env.NEXT_PUBLIC_URL}api/atestados`);//http://localhost:3000/api/fake
   if (!response.ok) {
     throw new Error(`Não foi possivel recuperar dados`);
   }
@@ -43,15 +43,31 @@ const TableOne = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetchData()
-      .then((fetchedData) => {
-        setData(fetchedData);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setError(error.message);
-        setLoading(false);
-      });
+    // Função assíncrona para obter o status de autenticação
+    const checkAuthAndFetchData = async () => {
+      try {
+        // Verifica o status de autenticação
+        const authStatus = await getAuthStatus();
+        if (authStatus.loggedIn===true) {
+          alert(authStatus.loggedIn)
+          // Se estiver logado, busca os dados
+          const fetchedData = await fetchData();
+          setData(fetchedData);
+        } else {
+          alert(authStatus.loggedIn)
+          throw new Error("Usuário não está logado");
+        }
+      } catch (error) {
+        console.log(error)
+       
+        
+      } finally {
+        setLoading(false); 
+     
+      }
+    };
+
+    checkAuthAndFetchData();
   }, []);
 
   if (loading) {
@@ -64,10 +80,6 @@ const TableOne = () => {
 
   return (
     <div className="rounded-[10px] bg-white px-7.5 pb-4 pt-7.5 shadow-1 dark:bg-gray-dark dark:shadow-card">
-    {/*   <h4 className="mb-5.5 text-body-2xlg font-bold text-dark dark:text-white">
-        Atestados
-      </h4> */}
-      
       <div className="bg-slate-50 flex flex-col rounded-lg">
         <div className="grid grid-cols-6 gap-4">
           <div className="px-2 pb-3.5">
@@ -91,6 +103,7 @@ const TableOne = () => {
         </div>
 
         {data.map((item, key) => (
+      
           <div
             className={`grid grid-cols-6 gap-4 ${
               key === data.length - 1
@@ -99,11 +112,10 @@ const TableOne = () => {
             }`}
             key={key}
           >
-            
             <div className="flex items-center gap-3.5 px-2 py-4">
-            <div className="flex items-center justify-center px-2 py-4">
-              <p className="font-medium  dark:text-slate-900">{item.CPF}</p>
-            </div>
+              <div className="flex items-center justify-center px-2 py-4">
+                <p className="font-medium  dark:text-slate-900">{item.CPF}</p>
+              </div>
             </div>
             <div className="flex items-center justify-center px-2 py-4">
               <p className="font-medium text-dark">{item.nome}</p>
@@ -128,6 +140,7 @@ const TableOne = () => {
         ))}
       </div>
     </div>
+    
   );
 };
 
