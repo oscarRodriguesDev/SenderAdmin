@@ -10,12 +10,11 @@ export default function HomeDashboard() {
   return (
     <>
     
-    <AuthProvider>
-
+    
     <DefaultLayout>
         <ECommerce />
       </DefaultLayout>
-    </AuthProvider>
+    
    
     </>
   );

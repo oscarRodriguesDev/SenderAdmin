@@ -1,8 +1,8 @@
 'use client'
 import { useEffect, useState } from "react";
 import { ImFilePicture } from "react-icons/im";
-import { AuthStatus, getAuthStatus } from "@/app/auth/authEmail";
-import { AuthProvider } from "@/app/auth/AuthContext";
+import {getAuthStatus } from "@/app/auth/authEmail";
+
 
 interface dataProps {
   CPF: string;
@@ -49,12 +49,10 @@ const TableOne = () => {
         // Verifica o status de autenticação
         const authStatus = await getAuthStatus();
         if (authStatus.loggedIn===true) {
-          alert(authStatus.loggedIn)
-          // Se estiver logado, busca os dados
           const fetchedData = await fetchData();
           setData(fetchedData);
         } else {
-          alert(authStatus.loggedIn)
+          
           throw new Error("Usuário não está logado");
         }
       } catch (error) {
