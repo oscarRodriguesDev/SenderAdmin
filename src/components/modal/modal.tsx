@@ -9,7 +9,7 @@ handleModalVisible:()=>void
 export const ModalContext =  createContext({}as ModalContextData)
 
 export const ModalProvider=({children}:{children:ReactNode})=>{
-const [visible,setVisible]=useState(false)
+const [visible,setVisible]=useState(true)
 function handleModalVisible(){
   setVisible(!visible)
 }
