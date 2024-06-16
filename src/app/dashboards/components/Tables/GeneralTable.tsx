@@ -15,7 +15,7 @@ interface dataProps {
 }
 
 export const fetchData = async (): Promise<dataProps[]> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_URL}api/atestados`);
+  const response = await fetch(`${process.env.NEXT_PUBLIC_URL}api/fake`);
   if (!response.ok) {
     throw new Error(`Não foi possível recuperar dados`);
   }
@@ -95,7 +95,7 @@ const TableOne = () => {
   }
 
   return (
-    <div className="rounded-[10px] bg-white px-7.5 pb-4 pt-7.5 shadow-1 dark:bg-gray-dark dark:shadow-card">
+    <div className="rounded-[10px] bg-white px-2 pb-2 pt-2 shadow-1 dark:bg-gray-dark dark:shadow-card">
       <div className="bg-slate-50 flex flex-col rounded-lg">
         <div className="grid grid-cols-7 gap-2">
           <div className="px-2 pb-3.5">
