@@ -29,7 +29,13 @@ const menuGroups = [
         <MdDashboard size={24}/>
         ),
         label: "Atestados",
-        route: "/dashboards/aplication/tables" 
+        route: "/dashboards/aplication/tables",
+        children: [
+          { label: "Aprovados", route: "/dashboards/aplication/aprovados" },
+          { label: "Reprovados", route: "/dashboards/aplication/reprovados" },
+        ], 
+
+      
       
       },
 

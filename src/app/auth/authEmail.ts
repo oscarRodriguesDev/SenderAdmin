@@ -1,7 +1,7 @@
 // authEmail.ts
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
-import { getDatabase, ref, get } from 'firebase/database';
+import { getDatabase, ref, get,set } from 'firebase/database';
 import { redirect } from "next/navigation";
 
 // Configurações do Firebase
@@ -123,4 +123,44 @@ export async function readAllData(): Promise<{ sendSesmtData: any, currentUserUI
       reject(error);
     });
   });
+}
+
+
+// Função para ler dados de um nó específico do Firebase Realtime Database
+export async function readDataByLabel(label: string): Promise<any> {
+  return new Promise((resolve, reject) => {
+    const specificRef = ref(database, `SendSesmt/${label}`);
+
+    get(specificRef).then((snapshot) => {
+      const data = snapshot.exists() ? snapshot.val() : null;
+      resolve(data);
+    }).catch((error) => {
+      reject(error);
+    });
+  });
+}
+
+//função altera o aprove do objeto
+export async function updateData(cpf: string, status: string): Promise<void> {
+  const sendSesmtRef = ref(database, `SendSesmt/${cpf}`);
+  
+  try {
+    const sendSesmtSnapshot = await get(sendSesmtRef);
+    if (sendSesmtSnapshot.exists()) {
+      const sendSesmtData = sendSesmtSnapshot.val();
+      if (sendSesmtData) {
+        const parsedData = JSON.parse(sendSesmtData);
+        parsedData.aprove = status ; // atualiza o aprove
+        
+        // Salva os dados atualizados de volta no banco de dados
+        await set(sendSesmtRef, JSON.stringify(parsedData));
+      } else {
+        throw new Error(`Não foi encontrado nenhum dado para o CPF ${cpf}`);
+      }
+    } else {
+      throw new Error(`Não foi encontrado nenhum dado para o CPF ${cpf}`);
+    }
+  } catch (error) {
+    throw new Error(`${error} ocorreu ao tentaar alterar o valor no banco de dados`);
+  }
 }

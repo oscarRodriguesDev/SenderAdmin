@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ModalProvider>
+      
         <ThemeProvider attribute="class">
           <AuthProvider>
             <div>
@@ -27,7 +27,7 @@ export default function RootLayout({
               </div>
           </AuthProvider>
         </ThemeProvider>
-        </ModalProvider>
+       
       </body>
     </html>
   );
