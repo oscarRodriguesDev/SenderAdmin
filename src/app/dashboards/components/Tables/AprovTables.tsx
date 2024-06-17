@@ -25,13 +25,16 @@ const fetchData = async (): Promise<DataProps[]> => {
     for (const key in data.sendSesmtData) {
       if (data.sendSesmtData.hasOwnProperty(key) && key !== "atestados") {
         const parsedData: DataProps = JSON.parse(data.sendSesmtData[key]);
-        parsedData.CPF = key;
-        result.push(parsedData);
+        if (parsedData.url !== '') {
+          parsedData.CPF = key;
+          result.push(parsedData);
+        }
       }
     }
+    
     return result;
   } catch (error) {
-    throw new Error(`Não foi possível recuperar dados: ${error.message}`);
+    throw new Error(`Não foi possível recuperar dados: ${error}`);
   }
 };
 

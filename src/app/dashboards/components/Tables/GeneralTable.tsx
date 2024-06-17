@@ -27,13 +27,16 @@ export const fetchData = async (): Promise<dataProps[]> => {
   for (const key in sendSesmtData) {
     if (sendSesmtData.hasOwnProperty(key) && key !== "atestados") {
       const parsedData: dataProps = JSON.parse(sendSesmtData[key]);
-      parsedData.CPF = key;
-      result.push(parsedData);
+      if (parsedData.url !== '') {
+        parsedData.CPF = key;
+        result.push(parsedData);
+      }
     }
   }
 
   return result;
 };
+
 
 const TableOne = () => {
   const [data, setData] = useState<dataProps[]>([]);
