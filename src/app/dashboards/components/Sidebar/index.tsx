@@ -7,7 +7,7 @@ import Image from "next/image";
 import SidebarItem from "./SidebarItem";
 import ClickOutside from "../ClickOutside";
 import useLocalStorage from "../../hooks/useLocalStorage";
-import { MdDashboard } from "react-icons/md";
+import { FaFileMedicalAlt } from "react-icons/fa";
 /* import { BsCalendar3 } from "react-icons/bs";
 import { PiUserCircleBold } from "react-icons/pi";
 import { GrConfigure } from "react-icons/gr";
@@ -26,7 +26,7 @@ const menuGroups = [
       //dashboards
       {
         icon: (
-        <MdDashboard size={24}/>
+        <FaFileMedicalAlt size={24}/>
         ),
         label: "Atestados",
         route: "/dashboards/aplication/tables",

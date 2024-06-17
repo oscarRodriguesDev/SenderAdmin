@@ -18,6 +18,7 @@
     "43210987654": "{\"contrato\":\"Sede\",\"cpf\":\"43210987654\",\"empresa\":\"Empresa P\",\"nome\":\"Paulo Almeida\",\"ultima_data\":\"7\\/12\\/2022\",\"url\":\"\",\"aprove\":\"reprovado\"}",
     "98765432109": "{\"contrato\":\"Filial\",\"cpf\":\"98765432109\",\"empresa\":\"Empresa Q\",\"nome\":\"Quitéria Nunes\",\"ultima_data\":\"23\\/10\\/2024\",\"url\":\"\"}",
     "65432109876": "{\"contrato\":\"Matriz\",\"cpf\":\"65432109876\",\"empresa\":\"Empresa R\",\"nome\":\"Rafaela Santos\",\"ultima_data\":\"18\\/3\\/2023\",\"url\":\"\",\"aprove\":\"reprovado\"}",
-    "32109876543": "{\"contrato\":\"Sede\",\"cpf\":\"32109876543\",\"empresa\":\"Empresa S\",\"nome\":\"Samuel Lima\",\"ultima_data\":\"4\\/7\\/2025\",\"url\":\"\",\"aprove\":\"aprovado\"}"
+    "32109876543": "{\"contrato\":\"Sede\",\"cpf\":\"32109876543\",\"empresa\":\"Empresa S\",\"nome\":\"Samuel Lima\",\"ultima_data\":\"4\\/7\\/2025\",\"url\":\"\",\"aprove\":\"aprovado\"}",
+    "atestados": "[\"06230124645\", \"12345678910\", \"56789012345\", \"01234567890\", \"21098765432\", \"76543210987\"]"
   }
 }

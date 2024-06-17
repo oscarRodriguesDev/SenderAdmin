@@ -83,7 +83,7 @@ export async function userLogout(): Promise<boolean> {
 // Interface para status de autenticação
 export interface AuthStatus {
   loggedIn: boolean;
-  email?: string | null;
+  email?: string | null|undefined;
 }
 
 // Função para obter o status de autenticação
