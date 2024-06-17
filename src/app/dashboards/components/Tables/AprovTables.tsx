@@ -16,7 +16,7 @@ interface DataProps {
 
 const fetchData = async (): Promise<DataProps[]> => {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}api/fake`);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}api/atestados`);
     if (!response.ok) {
       throw new Error(`Não foi possível recuperar dados`);
     }

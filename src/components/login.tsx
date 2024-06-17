@@ -4,6 +4,7 @@ import { userLogin } from "@/app/auth/authEmail";
 import { useRouter } from "next/navigation";
 
 
+
 export function Login() {
   const [user, setUser] = useState<string>('');
   const [senha, setSenha] = useState<string>('');
@@ -15,10 +16,10 @@ export function Login() {
       if (res) {
         router.push('/dashboards/aplication');
       } else {
-        alert('Erro ao fazer login');
+     alert('Acesso não autorizado!')
       }
     } catch (error) {
-      alert('Erro ao fazer login');
+      alert('Acesso não autorizado!')
     }
   }
 

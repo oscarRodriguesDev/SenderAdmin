@@ -74,17 +74,15 @@ const DropdownNotification = () => {
     getNotificationList();
 }, []);
 
-
-
-
 useEffect(() => {
-    const compnotif = localStorage.getItem("alertas");
-    if (compnotif !== String(count)) {  // Correção: Comparação correta
-        setNotifying(false);
-    } else {
-        setNotifying(true);
-    }
-}, []);
+
+
+  
+
+})
+
+
+
 
 
 
@@ -96,7 +94,7 @@ useEffect(() => {
       <li>
         <Link
           onClick={() => {
-            setNotifying(false);
+           setValue(String(count))
             setDropdownOpen(!dropdownOpen);
           }}
           href="#"
@@ -104,11 +102,9 @@ useEffect(() => {
         >
           <span className="relative">
      
-            {!notifying ?(
-           <LiaEnvelopeOpen size={24}/>
-            ):(
+        
             <LiaEnvelopeSolid size={24}/>
-            )}
+            
               
             <span
               className={`absolute -top-0.5 right-0 z-1 h-2.5 w-2.5 rounded-full border-2 border-gray-2 bg-red-light dark:border-dark-3 ${
@@ -138,13 +134,13 @@ useEffect(() => {
             <ul className="no-scrollbar mb-5 flex h-auto flex-col gap-1 overflow-y-auto">
               {listaNotif.map((item, index) => (
                 <li key={index}>
-                  <Link
+                  <div
                     className="flex items-center gap-4 rounded-[10px] p-2.5 hover:bg-gray-2 dark:hover:bg-dark-3"
-                    href="#"
+                 
                   >
                     <span className="block h-14 w-14 rounded-full">
 
-                      {notifying ? (  <TbPointFilled size={24} color={'#f00'}/>):(<TbPointFilled size={24} color={'#0d5109'}/>)}
+                    <TbPointFilled size={24} color={'#0d5109'}/>
                     
                     </span>
 
@@ -154,7 +150,7 @@ useEffect(() => {
                       </span>
                    
                     </span>
-                  </Link>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -163,7 +159,7 @@ useEffect(() => {
               className="flex items-center justify-center rounded-[7px] border border-primary p-2.5 font-medium text-primary hover:bg-blue-light-5 dark:border-dark-4 dark:text-dark-6 dark:hover:border-primary dark:hover:bg-blue-light-3 dark:hover:text-primary"
               href="#"
             >
-              VEja todas as notificações
+             Marcar todas como Lidas
             </Link>
           </div>
         )}
