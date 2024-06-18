@@ -1,111 +1,97 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import ClickOutside from "../ClickOutside";
 import { TbPointFilled } from "react-icons/tb";
-import { LiaEnvelopeOpen } from "react-icons/lia";
 import { LiaEnvelopeSolid } from "react-icons/lia";
+import { updateAlert } from "@/app/auth/authEmail"; // Deverá ser feito via API no futuro
+import { Toaster, toast } from 'sonner'
 
-const notificationList = [
-  {
-    image: "/images/user/user-15.png",
-    title: "Piter Joined the Team!",
-    subTitle: "Congratulate him",
-  },
-];
-
-
+type Notification = {
+  cpf: string;
+  title: string;
+};
 
 const DropdownNotification = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [notifying, setNotifying] = useState(true);
-  const [listaNotif, setListaNotif] = useState<{ title: string }[]>([]);
-  const [count,setCount]=useState<number>(0)
-  const [value,setValue] = useState<string>('')
+  const [listaNotif, setListaNotif] = useState<Notification[]>([]);
+  const [count, setCount] = useState<number>(0);
+  const [value, setValue] = useState<string>("");
 
-
-
-  const getNotifications = async (): Promise<{ title: string }[]> => {
+  // Função que busca o valor de alerta pela API e caso true ela retorna um aviso
+  const getNotifications = async (): Promise<Notification[]> => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_URL}api/atestados`);
     if (!response.ok) {
       throw new Error(`Não foi possível recuperar dados`);
     }
-  
+
     const data = await response.json();
-    const result: { title: string }[] = [];
-  
+    const result: Notification[] = [];
+
     const sendSesmtData = data.sendSesmtData;
-    const atestados = JSON.parse(sendSesmtData.atestados);
-  
-    if (!atestados || !Array.isArray(atestados)) {
-      throw new Error("Formato de atestados inválido");
-    }
-  
-    for (const cpf of atestados) {
+
+    for (const cpf in sendSesmtData) {
       if (sendSesmtData.hasOwnProperty(cpf)) {
         const parsedData = JSON.parse(sendSesmtData[cpf]);
-        if (parsedData.url !== "") {
-          result.push({ title: `${cpf} enviou um atestado` });
-         
-          
+
+        if (parsedData.url !== "" && parsedData.alert) {
+          result.push({
+            cpf,
+            title: `${cpf} enviou um atestado`,
+          });
         }
       }
     }
-  
+
     return result;
   };
 
-
-
-
-
+  // UseEffect chama a função que verifica se tem notificações novas para serem examinadas
   useEffect(() => {
-    async function getNotificationList() {
-        try {
-            const notifications = await getNotifications();
-            setListaNotif(notifications);
-            setCount(notifications.length);
-            localStorage.setItem("alertas", String(notifications.length));  // Correção: Use String(notifications.length)
-        } catch (error) {
-            console.error("Erro ao buscar notificações:", error);
-        }
+    const fetchNotifications = async () => {
+      try {
+        const notifications = await getNotifications();
+        setListaNotif(notifications);
+        setCount(notifications.length);
+      } catch (error) {
+        console.error("Erro ao obter notificações:", error);
+      }
+    };
+
+    fetchNotifications();
+  }, []);
+
+  const openNotify = async (cpf: string) => {
+    try {
+      await updateAlert(cpf, false);
+      setListaNotif((prev) => prev.filter((notif) => notif.cpf !== cpf));
+      setCount((prev) => prev - 1);
+      toast('Você não verá mais esta nofitificação!')
+    } catch (error) {
+      console.error("Erro ao atualizar notificação:", error);
     }
-
-    getNotificationList();
-}, []);
-
-useEffect(() => {
-
-
-  
-
-})
-
-
-
-
-
+  };
 
   return (
+  
     <ClickOutside
       onClick={() => setDropdownOpen(false)}
       className="relative hidden sm:block"
     >
+      <Toaster position="top-center"/>
       <li>
         <Link
           onClick={() => {
-           setValue(String(count))
+            setValue(String(count));
             setDropdownOpen(!dropdownOpen);
           }}
           href="#"
           className="relative flex h-12 w-12 items-center justify-center rounded-full border border-stroke bg-gray-2 text-dark hover:text-primary dark:border-dark-4 dark:bg-dark-3 dark:text-white dark:hover:text-white"
         >
           <span className="relative">
-     
-        
-            <LiaEnvelopeSolid size={24}/>
-            
-              
+            <LiaEnvelopeSolid size={24} />
+
             <span
               className={`absolute -top-0.5 right-0 z-1 h-2.5 w-2.5 rounded-full border-2 border-gray-2 bg-red-light dark:border-dark-3 ${
                 !notifying ? "hidden" : "inline"
@@ -115,8 +101,6 @@ useEffect(() => {
             </span>
           </span>
         </Link>
-
-
 
         {dropdownOpen && (
           <div
@@ -136,19 +120,16 @@ useEffect(() => {
                 <li key={index}>
                   <div
                     className="flex items-center gap-4 rounded-[10px] p-2.5 hover:bg-gray-2 dark:hover:bg-dark-3"
-                 
+                    onClick={() => openNotify(item.cpf)}
                   >
                     <span className="block h-14 w-14 rounded-full">
-
-                    <TbPointFilled size={24} color={'#0d5109'}/>
-                    
+                      <TbPointFilled size={24} color={"#ef5e48"} />
                     </span>
 
                     <span className="block">
-                      <span className="block font-medium text-sm text-dark dark:text-white ">
+                      <span className="block font-medium text-sm text-dark dark:text-white">
                         {item.title}
                       </span>
-                   
                     </span>
                   </div>
                 </li>
@@ -159,7 +140,7 @@ useEffect(() => {
               className="flex items-center justify-center rounded-[7px] border border-primary p-2.5 font-medium text-primary hover:bg-blue-light-5 dark:border-dark-4 dark:text-dark-6 dark:hover:border-primary dark:hover:bg-blue-light-3 dark:hover:text-primary"
               href="#"
             >
-             Marcar todas como Lidas
+              Marcar todas como Lidas
             </Link>
           </div>
         )}

@@ -164,3 +164,29 @@ export async function updateData(cpf: string, status: string): Promise<void> {
     throw new Error(`${error} ocorreu ao tentaar alterar o valor no banco de dados`);
   }
 }
+
+
+//função altera o alerta do objeto
+export async function updateAlert(cpf: string, status: boolean): Promise<void> {
+  const sendSesmtRef = ref(database, `SendSesmt/${cpf}`);
+  
+  try {
+    const sendSesmtSnapshot = await get(sendSesmtRef);
+    if (sendSesmtSnapshot.exists()) {
+      const sendSesmtData = sendSesmtSnapshot.val();
+      if (sendSesmtData) {
+        const parsedData = JSON.parse(sendSesmtData);
+        parsedData.alert = status ; // atualiza o alerta
+        
+        // Salva os dados atualizados de volta no banco de dados
+        await set(sendSesmtRef, JSON.stringify(parsedData));
+      } else {
+        throw new Error(`Não foi encontrado nenhum dado para o CPF ${cpf}`);
+      }
+    } else {
+      throw new Error(`Não foi encontrado nenhum dado para o CPF ${cpf}`);
+    }
+  } catch (error) {
+    throw new Error(`${error} ocorreu ao tentaar alterar o valor no banco de dados`);
+  }
+}
