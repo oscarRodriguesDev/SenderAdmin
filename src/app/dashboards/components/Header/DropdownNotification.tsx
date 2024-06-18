@@ -5,7 +5,7 @@ import ClickOutside from "../ClickOutside";
 import { TbPointFilled } from "react-icons/tb";
 import { LiaEnvelopeSolid } from "react-icons/lia";
 import { updateAlert } from "@/app/auth/authEmail"; // Deverá ser feito via API no futuro
-import { Toaster, toast } from 'sonner'
+import { Toaster, toast } from "sonner"; // Importação do componente de toast para feedback visual
 
 type Notification = {
   cpf: string;
@@ -13,13 +13,12 @@ type Notification = {
 };
 
 const DropdownNotification = () => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [notifying, setNotifying] = useState(true);
-  const [listaNotif, setListaNotif] = useState<Notification[]>([]);
-  const [count, setCount] = useState<number>(0);
-  const [value, setValue] = useState<string>("");
+  const [dropdownOpen, setDropdownOpen] = useState(false); // Estado para controlar a abertura/fechamento do dropdown
+  const [notifying, setNotifying] = useState(true); // Estado para controlar se há notificações ativas
+  const [listaNotif, setListaNotif] = useState<Notification[]>([]); // Estado para armazenar a lista de notificações
+  const [count, setCount] = useState<number>(0); // Estado para armazenar a quantidade de novas notificações
 
-  // Função que busca o valor de alerta pela API e caso true ela retorna um aviso
+  // Função assíncrona que busca as notificações ativas na API
   const getNotifications = async (): Promise<Notification[]> => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_URL}api/atestados`);
     if (!response.ok) {
@@ -35,6 +34,7 @@ const DropdownNotification = () => {
       if (sendSesmtData.hasOwnProperty(cpf)) {
         const parsedData = JSON.parse(sendSesmtData[cpf]);
 
+        // Verifica se há uma URL definida e se o alerta está ativado
         if (parsedData.url !== "" && parsedData.alert) {
           result.push({
             cpf,
@@ -47,62 +47,71 @@ const DropdownNotification = () => {
     return result;
   };
 
-  // UseEffect chama a função que verifica se tem notificações novas para serem examinadas
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        const notifications = await getNotifications();
-        setListaNotif(notifications);
-        setCount(notifications.length);
-      } catch (error) {
-        console.error("Erro ao obter notificações:", error);
-      }
-    };
-
-    fetchNotifications();
-  }, []);
-
+  // Função assíncrona para marcar uma notificação como lida e removê-la da lista
   const openNotify = async (cpf: string) => {
     try {
-      await updateAlert(cpf, false);
-      setListaNotif((prev) => prev.filter((notif) => notif.cpf !== cpf));
-      setCount((prev) => prev - 1);
-      toast('Você não verá mais esta nofitificação!')
+      await updateAlert(cpf, false); // Chamada à API para atualizar o alerta como lido
+      setListaNotif((prev) => prev.filter((notif) => notif.cpf !== cpf)); // Remove a notificação da lista
+      setCount((prev) => prev - 1); // Atualiza o contador de notificações
+      setNotifying(false); // Define que não há mais notificações ativas para controlar o ícone de notificação
+      toast.success('Você não verá mais essa notificação'); // Exibe um toast de sucesso ao usuário
     } catch (error) {
       console.error("Erro ao atualizar notificação:", error);
     }
   };
 
+  // useEffect para buscar notificações ao montar o componente e a cada 30 segundos
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const notifications = await getNotifications(); // Busca as notificações ativas na API
+        setListaNotif(notifications); // Atualiza a lista de notificações
+        setCount(notifications.length); // Atualiza o contador de notificações
+        setNotifying(notifications.length > 0); // Define se há notificações ativas para controlar o ícone de notificação
+      } catch (error) {
+        console.error("Erro ao obter notificações:", error);
+      }
+    };
+
+    fetchNotifications(); // Chama a função de busca de notificações ao montar o componente
+
+    const interval = setInterval(fetchNotifications, 30000); // Intervalo para buscar novas notificações a cada 30 segundos
+
+    // Cleanup da função de intervalo ao desmontar o componente
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-  
     <ClickOutside
       onClick={() => setDropdownOpen(false)}
       className="relative hidden sm:block"
     >
-      <Toaster position="top-center"/>
+      <Toaster position="bottom-right" /> {/* Componente Toaster para exibir toasts de feedback */}
+
       <li>
         <Link
           onClick={() => {
-            setValue(String(count));
-            setDropdownOpen(!dropdownOpen);
+            setDropdownOpen(!dropdownOpen); // Alterna o estado para abrir ou fechar o dropdown
           }}
           href="#"
           className="relative flex h-12 w-12 items-center justify-center rounded-full border border-stroke bg-gray-2 text-dark hover:text-primary dark:border-dark-4 dark:bg-dark-3 dark:text-white dark:hover:text-white"
         >
           <span className="relative">
-            <LiaEnvelopeSolid size={24} />
+            <LiaEnvelopeSolid size={24} /> {/* Ícone de envelope para notificações */}
 
-            <span
-              className={`absolute -top-0.5 right-0 z-1 h-2.5 w-2.5 rounded-full border-2 border-gray-2 bg-red-light dark:border-dark-3 ${
-                !notifying ? "hidden" : "inline"
-              }`}
-            >
-              <span className="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-red-light opacity-75"></span>
-            </span>
+            {notifying && ( // Renderização condicional do ícone de notificação com animação de ping
+              <span className="absolute -top-0.5 right-0 z-1 h-2.5 w-2.5 rounded-full border-2 border-gray-2 bg-red-light dark:border-dark-3">
+                <span className="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-red-100 opacity-75"></span>
+              </span>
+            )}
+
+            {count > 0 && ( // Exibe a contagem de notificações não lidas
+              <h6 className="absolute top-5 right-0 left-2 text-xs text-red font-bold">{count}</h6>
+            )}
           </span>
         </Link>
 
-        {dropdownOpen && (
+        {dropdownOpen && ( // Renderização do conteúdo do dropdown se estiver aberto
           <div
             className={`absolute -right-27 mt-7.5 flex h-[550px] w-75 flex-col rounded-xl border-[0.5px] border-stroke bg-white px-5.5 pb-5.5 pt-5 shadow-default dark:border-dark-3 dark:bg-gray-dark sm:right-0 sm:w-[364px]`}
           >
@@ -119,11 +128,11 @@ const DropdownNotification = () => {
               {listaNotif.map((item, index) => (
                 <li key={index}>
                   <div
-                    className="flex items-center gap-4 rounded-[10px] p-2.5 hover:bg-gray-2 dark:hover:bg-dark-3"
-                    onClick={() => openNotify(item.cpf)}
+                    className="flex items-center gap-4 rounded-[10px] p-2.5 hover:bg-gray-2 dark:hover:bg-dark-3 cursor-pointer"
+                    onClick={() => openNotify(item.cpf)} // Ao clicar, marca a notificação como lida
                   >
                     <span className="block h-14 w-14 rounded-full">
-                      <TbPointFilled size={24} color={"#ef5e48"} />
+                      <TbPointFilled size={24} color={"#ef5e48"} /> {/* Ícone para representar a notificação */}
                     </span>
 
                     <span className="block">
