@@ -190,3 +190,29 @@ export async function updateAlert(cpf: string, status: boolean): Promise<void> {
     throw new Error(`${error} ocorreu ao tentaar alterar o valor no banco de dados`);
   }
 }
+
+
+
+export async function notificar(cpf:string,status:string): Promise<void>{
+  const sendSesmtRef = ref(database, `SendSesmt/${cpf}`);
+  try {
+    const sendSesmtSnapshot = await get(sendSesmtRef);
+    if (sendSesmtSnapshot.exists()) {
+      const sendSesmtData = sendSesmtSnapshot.val();
+      if (sendSesmtData) {
+        const parsedData = JSON.parse(sendSesmtData);
+        const notificação = {'notificação':`Olá ${parsedData.nome} informamos que seu atestado foi ${status}`}
+      parsedData.notificação = notificação.notificação ; // envia o alerta para o usuario
+      
+      // Salva os dados atualizados de volta no banco de dados
+      await set(sendSesmtRef, JSON.stringify(parsedData));
+    } else {
+      throw new Error(`Não foi encontrado nenhum dado para o CPF ${cpf}`);
+    }
+  } else {
+    throw new Error(`Não foi encontrado nenhum dado para o CPF ${cpf}`);
+  }
+} catch (error) {
+  throw new Error(`${error} ocorreu ao tentaar alterar o valor no banco de dados`);
+}
+}

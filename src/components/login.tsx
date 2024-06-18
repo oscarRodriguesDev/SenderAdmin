@@ -1,31 +1,30 @@
-'use client'
+"use client";
 import { useState } from "react";
 import { userLogin } from "@/app/auth/authEmail";
 import { useRouter } from "next/navigation";
-
-
+import { Toaster, toast } from "sonner";
 
 export function Login() {
-  const [user, setUser] = useState<string>('');
-  const [senha, setSenha] = useState<string>('');
+  const [user, setUser] = useState<string>("");
+  const [senha, setSenha] = useState<string>("");
   const router = useRouter();
 
   async function logar(cpf: string, senha: string) {
     try {
       const res = await userLogin(cpf, senha);
       if (res) {
-        router.push('/dashboards/aplication');
+        router.push("/dashboards/aplication");
       } else {
-     alert('Acesso não autorizado!')
+        toast.error("Acesso não autorizado!");
       }
     } catch (error) {
-      alert('Acesso não autorizado!')
+      toast.error("Acesso não autorizado!");
     }
   }
 
   return (
-
     <div className="w-full flex justify-center">
+      <Toaster />
       <form className="w-full flex flex-col space-y-4">
         <div className="flex space-x-2">
           <input

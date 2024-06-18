@@ -109,6 +109,7 @@ const config: Config = {
         "body-2xlg": ["22px", "28px"],
         "body-sm": ["14px", "22px"],
         "body-xs": ["12px", "20px"],
+        "body-min": ["10px", "18px"]
       },
       spacing: {
         4.5: "1.125rem",

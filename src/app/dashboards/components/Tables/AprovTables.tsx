@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import { FcViewDetails } from "react-icons/fc";
 import { TbFileDislike, TbFileLike } from "react-icons/tb";
-import { getAuthStatus, updateData } from "@/app/auth/authEmail";
+import { getAuthStatus, updateData,notificar } from "@/app/auth/authEmail";
+import { Toaster,toast } from "sonner";
 
 interface DataProps {
   CPF: string;
@@ -70,12 +71,13 @@ const TableOne = () => {
       // Atualiza o estado `data` após a atualização bem-sucedida
       const updatedData = data.map(item => {
         if (item.CPF === cpf) {
+          notificar(cpf,aprove)
           return { ...item, aprove }; // Atualiza apenas o item correspondente
         }
         return item;
       });
       setData(updatedData.filter(item => item.aprove === 'aprovado')); // Filtra novamente após atualização
-      alert(`Atestado de ${cpf} ${aprove === 'aprovado' ? 'aprovado' : 'reprovado'}`);
+      toast.success(`Atestado de ${cpf} ${aprove === 'aprovado' ? 'aprovado' : 'reprovado'}`);
     } catch (error) {
       console.error(`Erro ao atualizar dados: ${error}`);
       // Melhorar o tratamento de erro, se necessário
@@ -92,6 +94,7 @@ const TableOne = () => {
 
   return (
     <div className="rounded-[10px] bg-white px-2 pb-2 pt-2 shadow-1 dark:bg-green-400 dark:shadow-card">
+      <Toaster/>
       <div className="bg-slate-50 flex flex-col rounded-lg">
         <div className="grid grid-cols-7 gap-2">
           <div className="px-2 pb-3.5">
