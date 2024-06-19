@@ -1,10 +1,12 @@
+import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb"
+import DefaultLayout from "../../components/Layouts/DefaultLaout"
 import SettingsUsers from "../../components/SettingBoxes/editUser"
-export default function SettingsUser(){
+export default function SettingsUser() {
 
-    return(
-        <>
-        <h1>Pagina de configuração de usuarios</h1>
-       <SettingsUsers/>
-        </>
+    return (
+        <DefaultLayout>
+            <Breadcrumb pageName="Settings User" />
+            <SettingsUsers />
+        </DefaultLayout>
     )
 }
