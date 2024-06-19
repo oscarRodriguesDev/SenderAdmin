@@ -1,5 +1,5 @@
 import Breadcrumb from "../../components/Breadcrumbs/Breadcrumb";
-import TableOne from "../../components/Tables/GeneralTable";
+import TableOne from "../../components/Tables/allUsers";
 import TableThree from "../../components/Tables/TableThree";
 import TableTwo from "../../components/Tables/TableTwo";
 
@@ -7,14 +7,14 @@ import { Metadata } from "next";
 import DefaultLayout from "../../components/Layouts/DefaultLaout";
 
 export const metadata: Metadata = {
-  title: "Next.js Tables Page | NextAdmin - Next.js Dashboard Kit",
-  description: "This is Next.js Tables page for NextAdmin Dashboard Kit",
+  title: "All Users",
+  description: "Pagina listando todos os usuários ativos no banco de dados de usuarios",
 };
 
 const TablesPage = () => {
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Atestados" />
+      <Breadcrumb pageName="All Active Users" />
 
       <div className="flex flex-col gap-10">
         <TableOne />

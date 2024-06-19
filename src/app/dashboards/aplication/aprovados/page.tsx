@@ -7,14 +7,14 @@ import { Metadata } from "next";
 import DefaultLayout from "../../components/Layouts/DefaultLaout";
 
 export const metadata: Metadata = {
-  title: "Next.js Tables Page | NextAdmin - Next.js Dashboard Kit",
-  description: "This is Next.js Tables page for NextAdmin Dashboard Kit",
+  title: "Approved users",
+  description: "Lista de usuários com atestados aprovados",
 };
 
 const TablesPage = () => {
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Atestados Aprovados" />
+      <Breadcrumb pageName="Approved Doc" />
 
       <div className="flex flex-col gap-10">
         <TableOne />

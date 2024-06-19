@@ -75,7 +75,7 @@ const Header = (props: {
                 src={"/images/logo/logo2.svg"}
                 alt="Logo"
               />
-              <p className="font-medium">Sender Admin Dashboard</p>
+              <p className="font-medium">Sender Admin</p>
             </div>
           </div>
         </div>

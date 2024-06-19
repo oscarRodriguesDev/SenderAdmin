@@ -23,17 +23,20 @@ const menuGroups = [
   {
     name: "MENU",
     menuItems: [
-      //dashboards
+    
       {
         icon: (
         <FaFileMedicalAlt size={24}/>
         ),
         label: "Atestados",
-        route: "/dashboards/aplication/tables",
+        route: "#",
         children: [
+          {label: "Usuarios Ativos",route: "/dashboards/aplication/all"},
           { label: "Aprovados", route: "/dashboards/aplication/aprovados" },
           { label: "Reprovados", route: "/dashboards/aplication/reprovados" },
+          { label: "Settings Users", route: "/dashboards/aplication/editUser" },
         ], 
+        
 
       
       

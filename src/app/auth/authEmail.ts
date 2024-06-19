@@ -46,10 +46,12 @@ async function getAuthorizedEmails(): Promise<string[]> {
   }
 }
 
+
+
 // Função para login do usuário
 export async function userLogin(cpf: string, password: string): Promise<boolean> {
   const email = `${cpf}@sender.com.br`;
-
+ 
   try {
     // Busca a lista de e-mails autorizados no banco de dados
     const authorizedEmails = await getAuthorizedEmails();
@@ -68,6 +70,10 @@ export async function userLogin(cpf: string, password: string): Promise<boolean>
     return false;
   }
 }
+
+
+
+
 // Função para logout do usuário
 export async function userLogout(): Promise<boolean> {
   try {
@@ -80,26 +86,52 @@ export async function userLogout(): Promise<boolean> {
   }
 }
 
-// Interface para status de autenticação
+
 export interface AuthStatus {
   loggedIn: boolean;
-  email?: string | null|undefined;
+  email?: string | null | undefined;
+  userName?: string | null | undefined;
 }
 
 // Função para obter o status de autenticação
 export async function getAuthStatus(): Promise<AuthStatus> {
   return new Promise((resolve, reject) => {
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       if (user) {
-        resolve({ loggedIn: true, email: user.email });
+        const email = user.email;
+        let userName = null;
+
+        // Extrai o CPF do e-mail
+        if (email) {
+          const cpf = email.split('@')[0];
+          const sendSesmtRef = ref(database, `SendSesmt/${cpf}`);
+
+          try {
+            // Busca o nome do usuário no nó SendSesmt com o CPF informado
+            const snapshot = await get(sendSesmtRef);
+            if (snapshot.exists()) {
+              const userData = JSON.parse(snapshot.val());
+              userName = userData.nome; // Supondo que a estrutura do nó contenha um campo "nome"
+              console.log(userName);
+            } else {
+              console.error("CPF não encontrado no banco de dados.");
+            }
+          } catch (error) {
+            console.error("Erro ao buscar o nome do usuário:", error);
+          }
+        }
+
+        resolve({ loggedIn: true, email: email, userName: userName });
       } else {
-        resolve({ loggedIn: false, email: null });
+        resolve({ loggedIn: false, email: null, userName: null });
       }
     }, (error) => {
       reject(error);
     });
   });
 }
+
+
 
 // Função para verificar se o usuário está logado
 export async function isUserLoggedIn(): Promise<boolean> {

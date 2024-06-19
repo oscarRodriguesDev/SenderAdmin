@@ -1,10 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import ClickOutside from "../ClickOutside";
 import { userLogout, getAuthStatus,AuthStatus } from "@/app/auth/authEmail";
 import { FaUserLock } from "react-icons/fa";
+import { Toaster,toast } from "sonner";
 
 
 const DropdownUser = () => {
@@ -14,7 +14,7 @@ const DropdownUser = () => {
   const [userMail, setUserMail] =  useState<string>();
 
   async function logout() {
-    alert("Saindo...");
+    toast.success("Saindo...");
     await userLogout();
     window.location.href = "/";
   }
@@ -25,8 +25,8 @@ const DropdownUser = () => {
       try {
         const user = await getAuthStatus();
         setUser(user);
-        if (user?.email) {
-          setUsuario(user.email.slice(0,11));
+        if (user?.email && user.userName) {
+          setUsuario(user.userName); // aqui pega o nome do usuario
           setUserMail(user.email)
         } else {
           setUsuario(undefined); // ou null, dependendo do tipo aceito
@@ -50,23 +50,14 @@ const DropdownUser = () => {
       onClick={() => setDropdownOpen(!DropdownUser)}
       className="relative"
     >
+      <Toaster/>
       <Link
         onClick={() => setDropdownOpen(!dropdownOpen)}
         className="flex items-center gap-4"
         href="#"
       >
            <span className="h-12 w-12 rounded-full bg-fuchsia-700 flex flex-col items-center justify-center ">
-       {/*    <Image
-            width={112}
-            height={112}
-            src="/images/user/user-03.png"
-            style={{
-              width: "auto",
-              height: "auto",
-            }}
-            alt="User"
-            className="overflow-hidden rounded-full"
-          /> */}
+  
           <FaUserLock size={30}/>
         </span> 
 
@@ -100,32 +91,15 @@ const DropdownUser = () => {
         >
           <div className="flex items-center gap-2.5 px-5 pb-5.5 pt-3.5">
           <span className="h-11 w-12 rounded-full bg-fuchsia-700 flex flex-col items-center justify-center ">
-
             <FaUserLock size={15}/>
-             {/*  <Image
-                width={112}
-                height={112}
-                src="/images/user/user-03.png"
-                style={{
-                  width: "auto",
-                  height: "auto",
-                }}
-                alt="User"
-                className="overflow-hidden rounded-full"
-            
-              />
- */}
-             
             </span>
-
             <span className="block">
-            
               <span className="block font-medium text-dark-5 dark:text-dark-6">
                <strong className="text-xs"> {userMail}</strong>
               </span>
             </span>
           </div>
-          <ul className="flex flex-col gap-1 border-y-[0.5px] border-stroke p-2.5 dark:border-dark-3">
+    {/*       <ul className="flex flex-col gap-1 border-y-[0.5px] border-stroke p-2.5 dark:border-dark-3">
             <li>
               <Link
                 href="/profile"
@@ -152,9 +126,9 @@ const DropdownUser = () => {
                     fill=""
                   />
                 </svg>
-                View profile
+                Ver meu perfil
               </Link>
-            </li>
+            </li> 
 
             <li>
               <Link
@@ -184,8 +158,9 @@ const DropdownUser = () => {
                 </svg>
                 Account Settings
               </Link>
-            </li>
-          </ul>
+            </li> 
+
+          </ul> */}
           <div className="p-2.5">
             <button
               className="flex w-full items-center gap-2.5 rounded-[7px] p-2.5 text-sm font-medium text-dark-4 duration-300 ease-in-out hover:bg-gray-2 hover:text-dark dark:text-dark-6 dark:hover:bg-dark-3 dark:hover:text-white lg:text-base"
