@@ -88,6 +88,7 @@ const config: Config = {
           },
         },
       },
+      
       fontFamily: {
         sans: ["Inter", ...defaultTheme.fontFamily.sans],
         stock: [defaultTheme.fontFamily.sans],

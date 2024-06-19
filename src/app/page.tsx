@@ -1,21 +1,25 @@
 "use client";
-import { Container } from "@/components/Container";
-import { Hero } from "@/components/Hero";
-import { Navbar } from "@/components/Navbar";
+
 import { useState, useEffect } from "react";
-import { getAuthStatus } from "./auth/authEmail";
-import HomeDashboard from "./dashboards/aplication/page";
+import { getAuthStatus } from "./(auth)/auth/authEmail";
+import HomeDashboard from "./(aplication)/page";
+import { PageLogin } from "@/components/loginPage";
 
 export default function Home() {
   const [estado, setEstado] = useState<boolean | null>(null);
- 
+  const [load,setLoad]= useState<boolean>(false)
 
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
         const session = await getAuthStatus();
+        setLoad(session.loggedIn)
         setEstado(session.loggedIn);
-      
+          if(!estado){
+            setLoad(false);
+          }else{
+            setLoad(true);
+          }
       } catch (error) {
         setEstado(false);
       }
@@ -25,21 +29,18 @@ export default function Home() {
   }, []);
 
   return (
-    <>
+    <div>
       {!estado ? (
-        <Container>
-          <div className="w-full max-w-[1800px] bg-black absolute top-0 mb-56 h-auto">
-            <Navbar />
-          </div>
-          <Hero />
-        </Container>
+        <div className=" min-h-dvh  flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600">
+          <PageLogin
+          carregando={load}
+          />
+        </div>
       ) : (
         <div>
-         
           <HomeDashboard />
-  
         </div>
       )}
-    </>
+    </div>
   );
 }
