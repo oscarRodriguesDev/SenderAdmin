@@ -35,8 +35,8 @@ export function Login() {
         alt="Login Image"
         className="fixed top-1 object-cover w-full h-full opacity-65"
       />
-      <div className="bg-white bg-opacity-55 py-8 rounded-lg shadow-lg w-full max-w-md z-10">
-        <h1 className="w-full bg-sky-900 text-body-2xlg font-bold text-center mb-0 text-black ">LOGIN</h1>
+      <div className="bg-white bg-opacity-55 pb-2 rounded-t-lg shadow-lg w-full max-w-md z-10">
+        <h1 className="w-full bg-sky-900 text-body-2xlg font-bold text-center mb-0 text-white rounded-t-lg ">LOGIN</h1>
         <form
           className="space-y-6"
           onSubmit={(e) => {
@@ -47,7 +47,7 @@ export function Login() {
           <div className="flex flex-col  space-y-4">
             <Image
               src={imageLogin}
-              width={800}
+              width={600}
               height={400}
               alt="Login Image"
               className="relative top-1 object-cover w-full h-auto "
@@ -56,7 +56,7 @@ export function Login() {
               type="text"
               placeholder="CPF"
               required
-              className="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-2 py-5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={user}
               onChange={(e) => setUser(e.target.value)}
             />
@@ -64,13 +64,13 @@ export function Login() {
               type="password"
               placeholder="Senha"
               required
-              className="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-4 py-5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
             />
             <button
               type="submit"
-              className="w-full py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
+              className="w-40 mx-auto py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
             >
               Login
             </button>
