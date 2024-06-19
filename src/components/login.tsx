@@ -33,10 +33,10 @@ export function Login() {
         width={1000}
         height={800}
         alt="Login Image"
-        className="fixed top-1 object-cover w-full h-full opacity-25"
+        className="fixed top-1 object-cover w-full h-full opacity-65"
       />
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md z-10">
-        <h2 className="text-2xl font-bold text-center mb-0">Login</h2>
+      <div className="bg-white bg-opacity-55 py-8 rounded-lg shadow-lg w-full max-w-md z-10">
+        <h1 className="w-full bg-sky-900 text-body-2xlg font-bold text-center mb-0 text-black ">LOGIN</h1>
         <form
           className="space-y-6"
           onSubmit={(e) => {

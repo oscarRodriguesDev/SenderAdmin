@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/dashboards", "src/app/(aplication)", "src/app/hooks", "src/app/types", "src/app/js", "src/utils/costumer.type.xx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/dashboards", "src/app/(aplication)", "src/app/hooks", "src/app/bbbg", "src/app/js", "src/utils/costumer.type.xx"],
   "exclude": ["node_modules"]
 }
