@@ -273,7 +273,7 @@ export async function createUserAuthEmail(email: string, password: string): Prom
 }
 
 
-//função para salvar dados do usuario no banco de dados
+/// Função para salvar dados do usuário no banco de dados como strings JSON
 export async function CreateUser(cpf: string, email: string, nome: string, senha: string, empresa: string, contrato: string): Promise<void> {
   const permission = await createUserAuthEmail(email, senha);
   if (permission.success) {
@@ -291,7 +291,8 @@ export async function CreateUser(cpf: string, email: string, nome: string, senha
           ultima_data: '00/00/00',
         };
 
-        await set(sendSesmtRef, newUser);
+        // Salva os dados como uma string JSON
+        await set(sendSesmtRef, JSON.stringify(newUser));
         console.log('Usuário criado com sucesso.');
       } else {
         console.log('Usuário já existe no banco de dados.');
@@ -301,7 +302,8 @@ export async function CreateUser(cpf: string, email: string, nome: string, senha
     }
   } else {
     if (permission.error === 'auth/email-already-in-use') {
-      console.log('O email já está em uso, não é possível criar o usuário.');//aqui vai carregar o usuario contido no banco de dados
+      console.log('O email já está em uso, não é possível criar o usuário.');
+      // Aqui você pode carregar o usuário existente do banco de dados, se necessário.
     } else {
       console.log('Erro ao tentar criar o usuário:', permission.error);
     }
