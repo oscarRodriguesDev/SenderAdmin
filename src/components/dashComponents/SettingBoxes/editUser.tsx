@@ -5,154 +5,168 @@ import { GoNumber } from "react-icons/go";
 import { MdAlternateEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 
-
 const SettingsUsers = () => {
   return (
     <>
-      <div className="">
-        <div className="col-span-5 xl:col-span-3 mx-1 ">
-          <div className="rounded-[10px] border border-stroke bg-white shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card">
-            <div className="border-b border-stroke px-7 py-4 dark:border-dark-3 text-center">
-              <h3 className="font-medium text-dark dark:text-white">
-                Users Settings
+      <div className="container mx-auto px-4">
+        <div className="w-full lg:w-2/3 mx-auto">
+          <div className="rounded-xl border border-gray-300 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800">
+            <div className="border-b border-gray-300 px-7 py-4 text-center dark:border-gray-700">
+              <h3 className="font-medium text-gray-800 dark:text-white">
+                User Settings
               </h3>
             </div>
-            <div className="py-1 px-5">
+            <div className="py-5 px-6">
               <form>
-
-                  {/* Campo de cpf */}
-                <div className="mb-5.5">
-                  <label
-                    className="mb-3 block text-body-sm font-medium text-dark dark:text-white"
-                  >
-                 CPF
+                {/* Campo de CPF */}
+                <div className="mb-6">
+                  <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    CPF
                   </label>
                   <div className="relative">
-                    <span className="absolute left-4.5 top-1/2 -translate-y-1/2">
-                     {/* tinha um svg aqui */}
-                     <GoNumber size={24} />
+                    <span className="absolute left-4 top-1/2 transform -translate-y-1/2">
+                      <GoNumber size={24} />
                     </span>
                     <input
-                      className="w-full rounded-[7px] border-[1.5px] border-stroke bg-white py-2.5 pl-12.5 pr-4.5 text-dark focus:border-primary focus-visible:outline-none dark:border-dark-3 dark:bg-dark-2 dark:text-white dark:focus:border-primary"
+                      className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-12 pr-4 text-gray-800 focus:border-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:border-blue-500"
                       type="number"
                       placeholder="00000000000"
-                   
                     />
                   </div>
                 </div>
 
-
-                {/* campo de nome  */}
-                <div className="mb-5.5">
-                  <label
-                    className="mb-3 block text-body-sm font-medium text-dark dark:text-white"
-                  >
-                 Nome
+                {/* Campo de Nome */}
+                <div className="mb-6">
+                  <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Nome
                   </label>
                   <div className="relative">
-                    <span className="absolute left-4.5 top-1/2 -translate-y-1/2">
-                     {/* tinha um svg aqui */}
-                     <PiTextboxBold size={24} />
+                    <span className="absolute left-4 top-1/2 transform -translate-y-1/2">
+                      <PiTextboxBold size={24} />
                     </span>
                     <input
-                      className="w-full rounded-[7px] border-[1.5px] border-stroke bg-white py-2.5 pl-12.5 pr-4.5 text-dark focus:border-primary focus-visible:outline-none dark:border-dark-3 dark:bg-dark-2 dark:text-white dark:focus:border-primary"
+                      className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-12 pr-4 text-gray-800 focus:border-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:border-blue-500"
                       type="text"
-                      placeholder="nome do usuário"
-                   
+                      placeholder="Nome do usuário"
                     />
                   </div>
                 </div>
 
-
-
-                 {/* Campo de email do usuário */}
-                <div className="mb-5.5">
+                {/* Campo de Email */}
+                <div className="mb-6">
                   <label
-                    className="mb-3 block text-body-sm font-medium text-dark dark:text-white"
+                    className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
                     htmlFor="emailAddress"
                   >
-                   Email
+                    Email
                   </label>
                   <div className="relative">
-                    <span className="absolute left-4.5 top-1/2 -translate-y-1/2">
-                     {/* tinha um svg aqui */}
-                     <MdAlternateEmail size={24} />
+                    <span className="absolute left-4 top-1/2 transform -translate-y-1/2">
+                      <MdAlternateEmail size={24} />
                     </span>
                     <input
-                      className="w-full rounded-[7px] border-[1.5px] border-stroke bg-white py-2.5 pl-12.5 pr-4.5 text-dark focus:border-primary focus-visible:outline-none dark:border-dark-3 dark:bg-dark-2 dark:text-white dark:focus:border-primary"
+                      className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-12 pr-4 text-gray-800 focus:border-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:border-blue-500"
                       type="email"
                       name="emailAddress"
                       id="emailAddress"
-                      placeholder="cpf@gmail.com"
+                      placeholder="cpf@e-mail.com.br"
                       readOnly
                     />
                   </div>
                 </div>
 
 
-                  {/* Campo de senha  */}
-                <div className="mb-5.5">
+                {/* Campo de Senha */}
+                <div className="mb-6">
                   <label
-                    className="mb-3 block text-body-sm font-medium text-dark dark:text-white"
-                    htmlFor="emailAddress"
+                    className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                    htmlFor="password"
                   >
-                   Confirm Password
+                    Escolha uma senha forte
                   </label>
                   <div className="relative">
-                    <span className="absolute left-4.5 top-1/2 -translate-y-1/2">
-                     {/* tinha um svg aqui */}
-                     <RiLockPasswordLine size={24} />
+                    <span className="absolute left-4 top-1/2 transform -translate-y-1/2">
+                      <RiLockPasswordLine size={24} />
                     </span>
                     <input
-                      className="w-full rounded-[7px] border-[1.5px] border-stroke bg-white py-2.5 pl-12.5 pr-4.5 text-dark focus:border-primary focus-visible:outline-none dark:border-dark-3 dark:bg-dark-2 dark:text-white dark:focus:border-primary"
-                      type="Password"
+                      className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-12 pr-4 text-gray-800 focus:border-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:border-blue-500"
+                      type="password"
                       name="password"
                       id="password"
                       placeholder="*********"
-                     
                     />
                   </div>
                 </div>
 
 
-                {/* Campo de confirmação de senha */}
-                <div className="mb-5.5">
+                {/* Campo de Confirmação de Senha */}
+                <div className="mb-6">
                   <label
-                    className="mb-3 block text-body-sm font-medium text-dark dark:text-white"
-                    htmlFor="emailAddress"
+                    className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                    htmlFor="confirmPassword"
                   >
-                   new Password
+                    Confirme sua senha
                   </label>
                   <div className="relative">
-                    <span className="absolute left-4.5 top-1/2 -translate-y-1/2">
-                     {/* tinha um svg aqui */}
-                     <RiLockPasswordLine size={24} />
+                    <span className="absolute left-4 top-1/2 transform -translate-y-1/2">
+                      <RiLockPasswordLine size={24} />
                     </span>
                     <input
-                      className="w-full rounded-[7px] border-[1.5px] border-stroke bg-white py-2.5 pl-12.5 pr-4.5 text-dark focus:border-primary focus-visible:outline-none dark:border-dark-3 dark:bg-dark-2 dark:text-white dark:focus:border-primary"
-                      type="Password"
-                      name="password"
-                      id="password"
+                      className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-12 pr-4 text-gray-800 focus:border-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:border-blue-500"
+                      type="password"
+                      name="confirmPassword"
+                      id="confirmPassword"
                       placeholder="*********"
-                     
                     />
                   </div>
                 </div>
 
+
+                {/* Campo de Empresa */}
+                <div className="mb-6">
+                  <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Empresa
+                  </label>
+                  <div className="relative">
+                    <select className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-4 pr-8 text-gray-800 focus:border-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:border-blue-500">
+                      <option value="">Dikma</option>
+                      <option value="">Caex</option>
+                      <option value="">Ecoplus</option>
+                      <option value="">Dikmaq</option>
+                    </select>
+                  </div>
+                </div>
+
+
+                {/* informe do nome do contrato */}
+                <div className="mb-6">
+                  <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Contrato
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-4 top-1/2 transform -translate-y-1/2">
+                      <PiTextboxBold size={24} />
+                    </span>
+                    <input
+                      className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-12 pr-4 text-gray-800 focus:border-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:border-blue-500"
+                      type="text"
+                      placeholder="Digite o nome do contrato"
+                    />
+                  </div>
+                </div>
 
                 <div className="flex justify-end gap-3">
-
-                    {/* Botão para cancelar */}
+                  {/* Botão para cancelar */}
                   <button
-                    className="flex justify-center rounded-[7px] border border-stroke px-6 py-[7px] font-medium text-dark hover:shadow-1 dark:border-dark-3 dark:text-white"
-                    type="submit"
+                    className="flex justify-center rounded-lg border border-gray-300 px-6 py-2 font-medium text-gray-800 hover:shadow-md dark:border-gray-700 dark:text-white"
+                    type="button"
                   >
                     Cancel
                   </button>
 
-                    {/* Botão para alterar o usuario e senha */}
+                  {/* Botão para salvar */}
                   <button
-                    className="flex justify-center rounded-[7px] bg-primary px-6 py-[7px] font-medium text-gray-2 hover:bg-opacity-90"
+                    className="flex justify-center rounded-lg bg-blue-500 px-6 py-2 font-medium text-white hover:bg-blue-600"
                     type="submit"
                   >
                     Save
@@ -162,10 +176,9 @@ const SettingsUsers = () => {
             </div>
           </div>
         </div>
-      
       </div>
     </>
   );
 };
 
-export default SettingsUsers
+export default SettingsUsers;

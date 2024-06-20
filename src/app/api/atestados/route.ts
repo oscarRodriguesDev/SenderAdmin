@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import {readAllData } from '@/app/(auth)/auth/authEmail';
+import {readAllData,CreateUser } from '@/app/(auth)/auth/authEmail';
 // Rota GET para buscar dados
 export async function GET(request:Request) {
   const { searchParams } = new URL(request.url);
@@ -12,10 +12,24 @@ export async function GET(request:Request) {
 }
 
 
-//rota post para criar um novo usuario
-export async function Post(request:Request) {
+// Rota POST para criar um novo usuário
+export async function POST(request: Request) {
+  try {
+    const { cpf, email, nome, senha, empresa, contrato } = await request.json();
 
+    // Verifique se todos os campos obrigatórios estão presentes
+    if (!cpf || !email || !nome || !senha || !empresa || !contrato) {
+      return NextResponse.json({ success: false, error: 'Missing required fields' }, { status: 400 });
+    }
+
+    // Chama a função CreateUser
+    await CreateUser(cpf, email, nome, senha, empresa, contrato);
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Erro ao criar usuário:', error);
+    return NextResponse.json({ success: false, error:error}, { status: 500 });
+  }
 }
-
 
 
