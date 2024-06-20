@@ -20,16 +20,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const database = getDatabase(app);
 
-// Função para criar usuário
-export async function createUserEmail(email: string, password: string): Promise<boolean> {
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    return true;
-  } catch (error) {
-    console.error("Erro ao criar usuário:", error);
-    return false;
-  }
-}
+
 
 // Função para buscar a lista de e-mails autorizados do banco de dados
 async function getAuthorizedEmails(): Promise<string[]> {
@@ -248,3 +239,65 @@ export async function notificar(cpf:string,status:string): Promise<void>{
   throw new Error(`${error} ocorreu ao tentaar alterar o valor no banco de dados`);
 }
 }
+
+// Função para criar autenticação do usuario
+export async function createUserEmail(email: string, password: string): Promise<boolean> {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    return true;
+  } catch (error) {
+    console.error("Erro ao criar usuário:", error);
+    return false;
+  }
+}
+
+
+
+//opção de criação de usuário confirmando se ele ja existe no banco de dados
+export async function createUserAuthEmail(email: string, password: string): Promise<{ success: boolean; error?: string }> {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    console.log('vamos criar seu usaurio')
+    return { success: true };
+  } catch (error: any) {
+    if (error.code === 'auth/email-already-in-use') {
+     //retornar o usuario no bnco de dados
+     console.log('usuairio ja existe')
+       return {success: false}
+    } else {
+       //criar o usuario no banco de dados
+       console.log('vamos criar seu usuario agora!')
+      return { success: false, error: error.message };
+    }
+  }
+}
+
+
+//função para inserir os dados do usuario no banco de dados
+export async function CreateUser(cpf: string, nome: string, senha: string,empresa:string,contrato:string,): Promise<void> {
+
+  const sendSesmtRef = ref(database, `SendSesmt/${cpf}`);
+  try {
+    const sendSesmtSnapshot = await get(sendSesmtRef);
+    
+    if (!sendSesmtSnapshot.exists()) {
+      const newUser = {
+        nome: nome,
+        cpf: cpf,
+        empresa: '', 
+        contrato: '', 
+        url: '', 
+        ultima_data: '00/00/00',
+        notificação: ''
+      };
+      
+      await set(sendSesmtRef, newUser);
+      console.log('Usuário criado com sucesso.');
+    } else {
+      console.log('Usuário já existe.');
+    }
+  } catch (error) {
+    console.error('Erro ao criar usuário:', error);
+  }
+}
+

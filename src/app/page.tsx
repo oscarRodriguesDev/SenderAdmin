@@ -31,7 +31,7 @@ export default function Home() {
   return (
     <div>
       {!estado ? (
-        <div className=" min-h-dvh  flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600">
+        <div className=" min-h-dvh  flex items-center justify-center bg-gradient-to-t from-blue-500 via-purple-600 to-blue-500">
           <PageLogin
           carregando={load}
           />

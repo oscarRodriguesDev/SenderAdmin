@@ -12,5 +12,10 @@ export async function GET(request:Request) {
 }
 
 
+//rota post para criar um novo usuario
+export async function Post(request:Request) {
+
+}
+
 
 
