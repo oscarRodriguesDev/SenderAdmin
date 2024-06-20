@@ -257,47 +257,53 @@ export async function createUserEmail(email: string, password: string): Promise<
 export async function createUserAuthEmail(email: string, password: string): Promise<{ success: boolean; error?: string }> {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    console.log('vamos criar seu usaurio')
+    console.log('vamos criar seu usuário!')
     return { success: true };
   } catch (error: any) {
     if (error.code === 'auth/email-already-in-use') {
      //retornar o usuario no bnco de dados
-     console.log('usuairio ja existe')
+     console.log('usuário ja existe')
        return {success: false}
     } else {
        //criar o usuario no banco de dados
-       console.log('vamos criar seu usuario agora!')
+       console.log('Ocorreu um erro desconhecido ao tentar criar o usuario informado!')
       return { success: false, error: error.message };
     }
   }
 }
 
 
-//função para inserir os dados do usuario no banco de dados
-export async function CreateUser(cpf: string, nome: string, senha: string,empresa:string,contrato:string,): Promise<void> {
+//função para salvar dados do usuario no banco de dados
+export async function CreateUser(cpf: string, email: string, nome: string, senha: string, empresa: string, contrato: string): Promise<void> {
+  const permission = await createUserAuthEmail(email, senha);
+  if (permission.success) {
+    const sendSesmtRef = ref(database, `SendSesmt/${cpf}`);
+    try {
+      const sendSesmtSnapshot = await get(sendSesmtRef);
 
-  const sendSesmtRef = ref(database, `SendSesmt/${cpf}`);
-  try {
-    const sendSesmtSnapshot = await get(sendSesmtRef);
-    
-    if (!sendSesmtSnapshot.exists()) {
-      const newUser = {
-        nome: nome,
-        cpf: cpf,
-        empresa: '', 
-        contrato: '', 
-        url: '', 
-        ultima_data: '00/00/00',
-        notificação: ''
-      };
-      
-      await set(sendSesmtRef, newUser);
-      console.log('Usuário criado com sucesso.');
-    } else {
-      console.log('Usuário já existe.');
+      if (!sendSesmtSnapshot.exists()) {
+        const newUser = {
+          nome: nome,
+          cpf: cpf,
+          empresa: empresa,
+          contrato: contrato,
+          url: '',
+          ultima_data: '00/00/00',
+        };
+
+        await set(sendSesmtRef, newUser);
+        console.log('Usuário criado com sucesso.');
+      } else {
+        console.log('Usuário já existe no banco de dados.');
+      }
+    } catch (error) {
+      console.error('Erro ao criar usuário no banco de dados:', error);
     }
-  } catch (error) {
-    console.error('Erro ao criar usuário:', error);
+  } else {
+    if (permission.error === 'auth/email-already-in-use') {
+      console.log('O email já está em uso, não é possível criar o usuário.');//aqui vai carregar o usuario contido no banco de dados
+    } else {
+      console.log('Erro ao tentar criar o usuário:', permission.error);
+    }
   }
 }
-
