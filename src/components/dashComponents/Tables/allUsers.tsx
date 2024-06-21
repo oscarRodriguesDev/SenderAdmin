@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { FcViewDetails } from "react-icons/fc";
 import { TbFileDislike, TbFileLike } from "react-icons/tb";
+import { MdDelete } from "react-icons/md";
 import { getAuthStatus, updateData,notificar } from "@/app/(auth)/auth/authEmail";
 import { Toaster,toast } from "sonner";
 
@@ -102,7 +103,7 @@ const TableOne = () => {
     <div className="rounded-[10px] bg-white px-2 pb-2 pt-2 shadow-1 dark:bg-gray-dark dark:shadow-card">
       <Toaster/>
       <div className="bg-slate-50 flex flex-col rounded-lg">
-        <div className="grid grid-cols-7 gap-2">
+        <div className="grid grid-cols-8 gap-2">
           <div className="px-2 pb-3.5">
             <h5 className="text-sm font-medium uppercase xsm:text-base text-black">CPF</h5>
           </div>
@@ -123,6 +124,9 @@ const TableOne = () => {
           </div>
           <div className="px-2 pb-3.5 text-center sm:block">
             <h5 className="text-sm font-medium uppercase xsm:text-base text-black">Status</h5>
+          </div>
+          <div className="px-2 pb-3.5 text-center sm:block">
+            <h5 className="text-sm font-medium uppercase xsm:text-base text-black">DEL</h5>
           </div>
          
         </div>
@@ -177,6 +181,10 @@ const TableOne = () => {
                 </button>
               </p>
             </div>
+            <div className="flex items-center justify-center px-2 py-4 sm:flex">
+              <p className="font-medium text-dark"><MdDelete/></p>
+            </div>
+
           </div>
         ))}
       </div>

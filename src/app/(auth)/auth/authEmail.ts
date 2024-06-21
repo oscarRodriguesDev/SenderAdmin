@@ -295,17 +295,16 @@ export async function CreateUser(cpf: string, email: string, nome: string, senha
         await set(sendSesmtRef, JSON.stringify(newUser));
         console.log('Usuário criado com sucesso.');
       } else {
-        console.log('Usuário já existe no banco de dados.');
+        throw new Error(`Usuário já existe no banco de dados`);
       }
     } catch (error) {
-      console.error('Erro ao criar usuário no banco de dados:', error);
+      throw new Error(`Ocorreu um erro ao tentar salvar usuario`);
     }
   } else {
     if (permission.error === 'auth/email-already-in-use') {
-      console.log('O email já está em uso, não é possível criar o usuário.');
-      // Aqui você pode carregar o usuário existente do banco de dados, se necessário.
+      throw new Error(`Usuário já existe no banco de dados`);
     } else {
-      console.log('Erro ao tentar criar o usuário:', permission.error);
+      throw new Error(`Erro ao tentar salvar usuario`);
     }
   }
 }

@@ -5,89 +5,155 @@ import { GoNumber } from "react-icons/go";
 import { MdAlternateEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { Toaster, toast } from "sonner";
-import { useState, ChangeEvent, useRef } from "react";
-
+import { useState, ChangeEvent, useRef,FocusEvent} from "react";
+import { set } from "firebase/database";
 
 const SettingsUsers = () => {
-  const [cpf, setCpf] = useState<string>('')
-  const [email, setEmail] = useState<string>('')
-  const [senha, setSenha] = useState<string>('')
-  const [confirm, setConfirm] = useState<string>('')
-  const [nome, setNome] = useState<string>('')
-  const [empresa, setEmpresa] = useState<string>('')
-  const [contrato, setContrato] = useState<string>('')
-  const [textColor, setTextColor] = useState<string>('text-black'); // Estado para a cor do texto
+  const [cpf, setCpf] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [senha, setSenha] = useState<string>("");
+  const [confirm, setConfirm] = useState<string>("");
+  const [nome, setNome] = useState<string>("");
+  const [empresa, setEmpresa] = useState<string>("");
+  const [contrato, setContrato] = useState<string>("");
+  const [textColor, setTextColor] = useState<string>("text-black"); // Estado para a cor do texto
   const confirmRef = useRef<HTMLInputElement>(null);
 
 
 
-async function handleSubmit() {
-  try{
+   function clear(){
+     setCpf('')
+     setEmail('')
+     setNome("")
+     setEmail('')
+     setSenha("")
+     setConfirm("")
+     setEmpresa("")
+     setContrato("")
+   }
 
-    if (!cpf || !email || !senha || !nome || !empresa || !contrato) {
-     toast.error('campos vazios')
-    } 
-  }catch(err){
-    toast.error('impossivel salvar vazio' + err)
+//fução para validar cpf
+function validateCPF(cpf:string) {
+  // Remove caracteres não numéricos
+  cpf = cpf.replace(/[^\d]+/g, '');
+
+  if (cpf.length !== 11) return false;
+
+  // Elimina CPFs conhecidos como inválidos
+  const invalidCPFList = [
+    '00000000000', '11111111111', '22222222222', '33333333333',
+    '44444444444', '55555555555', '66666666666', '77777777777',
+    '88888888888', '99999999999'
+  ];
+  if (invalidCPFList.includes(cpf)) return false;
+
+  // Validação do primeiro dígito verificador
+  let sum = 0;
+  for (let i = 0; i < 9; i++) {
+    sum += parseInt(cpf.charAt(i)) * (10 - i);
   }
+  let checkDigit = 11 - (sum % 11);
+  if (checkDigit === 10 || checkDigit === 11) checkDigit = 0;
+  if (checkDigit !== parseInt(cpf.charAt(9))) return false;
 
-  const data = {
-    cpf: cpf,
-    email: email,
-    senha: senha,
-    nome: nome,
-    empresa: empresa,
-    contrato: contrato,
-  };
-
-  try {
-    const response = await fetch('/api/atestados', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-    if (response.ok) {
-    toast.success('cadastro realizado com sucesso');
-    }
-    const result = await response.json();
-    console.log(result);
-
-  
-  } catch (error) {
-    toast.error("Erro ao cadastrar: " + error);
-
+  // Validação do segundo dígito verificador
+  sum = 0;
+  for (let i = 0; i < 10; i++) {
+    sum += parseInt(cpf.charAt(i)) * (11 - i);
   }
+  checkDigit = 11 - (sum % 11);
+  if (checkDigit === 10 || checkDigit === 11) checkDigit = 0;
+  if (checkDigit !== parseInt(cpf.charAt(10))) return false;
+
+  return true;
 }
 
 
-
-
-
+//função para submenter o cadastro do usuario
+async function handleSubmit() {
+    if (!cpf || !email || !senha || !nome || !empresa || !contrato) {
+      toast.error("campos vazios");
+      return;
+    }
+  
+    const data = {
+      cpf: cpf,
+      email: email,
+      senha: senha,
+      nome: nome,
+      empresa: empresa,
+      contrato: contrato,
+    };
+  
+    try {
+      const response = await fetch("/api/atestados", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+  
+      if (response.ok) {
+        const result = await response.json();
+        toast.success("cadastro realizado com sucesso");
+        clear();
+      
+      } else {
+        const error = await response.json();
+        toast.error("Erro ao cadastrar: " + (error));
+      }
+    } catch (error) {
+      toast.error("Erro ao cadastrar: " + error);
+    }
+  }
+  
+  
+//função para pegar o valor da confirmação da senha
   const handleConfirmChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+   
     setConfirm(e.target.value);
   };
 
   const handleConfirmBlur = () => {
+ 
     if (senha !== confirm) {
       toast.error("Senhas não conferem");
-      setConfirm('');
-      setTextColor('text-red-500');
+      setConfirm("");
+      setTextColor("text-red-500");
     } else {
-      setTextColor('text-black');
+      setTextColor("text-black");
     }
+    
   };
 
 
-  function handleCPF(e: React.ChangeEvent<HTMLInputElement>){
-    setCpf(e.target.value.replace(/\D+/g, ''));
-    setEmail(`${cpf}@sender.com.br`)
-
+  //função para setar o valor do email de acordo com a regra do negócio
+  function handleCPF(e: React.ChangeEvent<HTMLInputElement>) {
+    setCpf(e.target.value);
+    setEmail(`${e.target.value}@sender.com.br`);
   }
 
 
+  //função para validar o cpf
+  function blurCPF(e:React.FocusEvent<HTMLInputElement>){
 
+    if(!validateCPF(e.target.value)){
+      setCpf('')
+      toast.error("O CPF informado é invalido!")
+    }else{
+      setCpf(e.target.value);
+    }
+    
+   }
+
+   //função para avaliar se a senha possui 8 letras
+   function blurPass(e:React.FocusEvent<HTMLInputElement>){
+     if(e.target.value.length<8){
+      toast.error('Sua senha precisa ter no minimo 8 caracteres')
+      setSenha('')
+     }
+   }
 
   return (
     <>
@@ -113,9 +179,10 @@ async function handleSubmit() {
                     </span>
                     <input
                       className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-12 pr-4 text-gray-800 focus:border-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:border-blue-500"
-                      type="number"
+                      type="text"
                       placeholder="00000000000"
                       value={cpf}
+                      onBlur={(e)=>blurCPF(e)}
                       onChange={(e) => handleCPF(e)}
                     />
                   </div>
@@ -135,7 +202,9 @@ async function handleSubmit() {
                       type="text"
                       placeholder="Nome do usuário"
                       value={nome}
-                      onChange={(e) => { setNome(e.target.value) }}
+                      onChange={(e) => {
+                        setNome(e.target.value);
+                      }}
                     />
                   </div>
                 </div>
@@ -159,12 +228,9 @@ async function handleSubmit() {
                       id="emailAddress"
                       placeholder="cpf@sender,com.br"
                       value={email}
-                    
-                     
                     />
                   </div>
                 </div>
-
 
                 {/* Campo de Senha */}
                 <div className="mb-6">
@@ -185,11 +251,13 @@ async function handleSubmit() {
                       id="password"
                       placeholder="*********"
                       value={senha}
-                      onChange={(e) => { setSenha(e.target.value) }}
+                      onBlur={(e) => {blurPass(e)}}
+                      onChange={(e) => {
+                        setSenha(e.target.value);
+                      }}
                     />
                   </div>
                 </div>
-
 
                 {/* Campo de Confirmação de Senha */}
                 <div className="mb-6">
@@ -204,16 +272,15 @@ async function handleSubmit() {
                       <RiLockPasswordLine size={24} />
                     </span>
                     <input
-                      className="w-full rounded-lg border border-gray-300 bg-white  py-2.5 pl-12 pr-4 text-gray-800 focus:border-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:border-blue-500"
+                      className="w-full rounded-lg border border-gray-300 bg-white  py-2.5 pl-12 pr-4 focus:border-blue-500 focus:outline-none  dark:border-gray-700 dark:bg-gray-900 dark:focus:border-blue-500"
                       type="password"
+                      placeholder='********'
                       value={confirm}
                       onChange={handleConfirmChange}
                       onBlur={handleConfirmBlur}
                     />
-
                   </div>
                 </div>
-
 
                 {/* Campo de Empresa */}
                 <div className="mb-6">
@@ -226,6 +293,7 @@ async function handleSubmit() {
                       value={empresa}
                       onChange={(e) => setEmpresa(e.target.value)}
                     >
+                      <option value="">Escolha</option>
                       <option value="Dikma">Dikma</option>
                       <option value="Caex">Caex</option>
                       <option value="Ecoplus">Ecoplus</option>
@@ -233,7 +301,6 @@ async function handleSubmit() {
                     </select>
                   </div>
                 </div>
-
 
                 {/* informe do nome do contrato */}
                 <div className="mb-6">
@@ -267,7 +334,9 @@ async function handleSubmit() {
                   <button
                     className="flex justify-center rounded-lg bg-blue-500 px-6 py-2 font-medium text-white hover:bg-blue-600"
                     type="button"
-                    onClick={(e) => { handleSubmit() }}
+                    onClick={(e) => {
+                      handleSubmit();
+                    }}
                   >
                     Save
                   </button>

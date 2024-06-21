@@ -14,29 +14,24 @@ export async function GET(request:Request) {
 
 
 
-export async function POST(request: Request) {
+export async function POST(request:Request) {
   try {
-    const { cpf, email, senha, nome,empresa,contrato } = await request.json();
+    const { cpf, email, senha, nome, empresa, contrato } = await request.json();
 
     // Verifique se todos os campos obrigatórios estão presentes
-    if (!cpf  || !nome || !empresa || !contrato) {
-      throw new Error(`Impossivel salvar objetos vazios ${error}`);
-     /*  return NextResponse.json({ success: false, error: 'Missing required fields' }, { status: 400 }); */
-     
+    if (!cpf || !nome || !empresa || !contrato) {
+      return NextResponse.json({ success: false, error: 'Missing required fields' }, { status: 400 });
     }
 
-    try{
+    try {
       await CreateUser(cpf, email, nome, senha, empresa, contrato);
-
-    }catch{
-      throw new Error(`Impossivel salvar  ${error}`);
+    } catch (error) {
+      return NextResponse.json({ success: false, error: `Failed to create user: ${error}` }, { status: 500 });
     }
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    throw new Error(`Impossivel salvar  ${error}`);
-    return NextResponse.json({ success: false, error:error}, { status: 500 });
+    return NextResponse.json({ success: false, error: `Failed to process request: ${error}` }, { status: 500 });
   }
 }
-
 
