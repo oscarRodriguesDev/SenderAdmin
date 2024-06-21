@@ -22,10 +22,13 @@ const SettingsUsers = () => {
 
 
 async function handleSubmit() {
-  // Garantir que não há dados vazios sendo enviados
-  if (!cpf || !email || !senha || !nome || !empresa || !contrato) {
-    toast.error("Preencha todos os campos");
-    return; // Parar a execução se algum campo estiver vazio
+  try{
+
+    if (!cpf || !email || !senha || !nome || !empresa || !contrato) {
+     toast.error('campos vazios')
+    } 
+  }catch(err){
+    toast.error('impossivel salvar vazio' + err)
   }
 
   const data = {
@@ -45,10 +48,16 @@ async function handleSubmit() {
       },
       body: JSON.stringify(data),
     });
-
+    if (response.ok) {
+    toast.success('cadastro realizado com sucesso');
+    }
     const result = await response.json();
+    console.log(result);
+
+  
   } catch (error) {
     toast.error("Erro ao cadastrar: " + error);
+
   }
 }
 

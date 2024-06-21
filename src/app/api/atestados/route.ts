@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import {readAllData,CreateUser } from '@/app/(auth)/auth/authEmail';
+import { error } from 'console';
 // Rota GET para buscar dados
 export async function GET(request:Request) {
   const { searchParams } = new URL(request.url);
@@ -19,15 +20,21 @@ export async function POST(request: Request) {
 
     // Verifique se todos os campos obrigatórios estão presentes
     if (!cpf  || !nome || !empresa || !contrato) {
-      return NextResponse.json({ success: false, error: 'Missing required fields' }, { status: 400 });
+      throw new Error(`Impossivel salvar objetos vazios ${error}`);
+     /*  return NextResponse.json({ success: false, error: 'Missing required fields' }, { status: 400 }); */
+     
     }
 
-    // Chama a função CreateUser
-    await CreateUser(cpf, email, nome, senha, empresa, contrato);
+    try{
+      await CreateUser(cpf, email, nome, senha, empresa, contrato);
+
+    }catch{
+      throw new Error(`Impossivel salvar  ${error}`);
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Erro ao criar usuário:', error);
+    throw new Error(`Impossivel salvar  ${error}`);
     return NextResponse.json({ success: false, error:error}, { status: 500 });
   }
 }
