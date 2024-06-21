@@ -1,7 +1,7 @@
 // authEmail.ts
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
-import { getDatabase, ref, get,set } from 'firebase/database';
+import { getDatabase, ref, get,set,remove } from 'firebase/database';
 import { redirect } from "next/navigation";
 
 // Configurações do Firebase
@@ -307,4 +307,14 @@ export async function CreateUser(cpf: string, email: string, nome: string, senha
       throw new Error(`Erro ao tentar salvar usuario`);
     }
   }
+}
+
+//deletar dados do banco de dados
+export async function deleteUser(cpf:string){
+       try{
+        const sendSesmtRef = ref(database, `SendSesmt/${cpf}`);
+        remove(sendSesmtRef)
+       }catch(err){
+        throw new Error(`Erro ao tentar remover usuario`);
+       }
 }

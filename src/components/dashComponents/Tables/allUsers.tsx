@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { FcViewDetails } from "react-icons/fc";
 import { TbFileDislike, TbFileLike } from "react-icons/tb";
 import { MdDelete } from "react-icons/md";
-import { getAuthStatus, updateData,notificar } from "@/app/(auth)/auth/authEmail";
+import { getAuthStatus, updateData,notificar,deleteUser } from "@/app/(auth)/auth/authEmail";
 import { Toaster,toast } from "sonner";
 
 interface dataProps {
@@ -103,7 +103,7 @@ const TableOne = () => {
     <div className="rounded-[10px] bg-white px-2 pb-2 pt-2 shadow-1 dark:bg-gray-dark dark:shadow-card">
       <Toaster/>
       <div className="bg-slate-50 flex flex-col rounded-lg">
-        <div className="grid grid-cols-8 gap-2">
+        <div className="grid grid-cols-8 gap-1">
           <div className="px-2 pb-3.5">
             <h5 className="text-sm font-medium uppercase xsm:text-base text-black">CPF</h5>
           </div>
@@ -133,7 +133,7 @@ const TableOne = () => {
 
         {data.map((item, key) => (
           <div
-            className={`grid grid-cols-7 gap-2 ${key === data.length - 1 ? "" : "border-b border-stroke dark:border-dark-3"
+            className={`grid grid-cols-8 gap-1 ${key === data.length - 1 ? "" : "border-b border-stroke dark:border-dark-3"
               }`}
             key={key}
           >
@@ -182,7 +182,11 @@ const TableOne = () => {
               </p>
             </div>
             <div className="flex items-center justify-center px-2 py-4 sm:flex">
-              <p className="font-medium text-dark"><MdDelete/></p>
+              <p className="font-medium text-dark">
+                <MdDelete size={24}
+                onClick={()=>{deleteUser(item.CPF)}}
+                />
+                </p>
             </div>
 
           </div>
