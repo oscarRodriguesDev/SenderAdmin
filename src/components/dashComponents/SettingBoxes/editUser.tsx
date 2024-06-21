@@ -4,10 +4,85 @@ import { PiTextboxBold } from "react-icons/pi";
 import { GoNumber } from "react-icons/go";
 import { MdAlternateEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
+import { Toaster, toast } from "sonner";
+import { useState, ChangeEvent, useRef } from "react";
+
 
 const SettingsUsers = () => {
+  const [cpf, setCpf] = useState<string>('')
+  const [email, setEmail] = useState<string>('')
+  const [senha, setSenha] = useState<string>('')
+  const [confirm, setConfirm] = useState<string>('')
+  const [nome, setNome] = useState<string>('')
+  const [empresa, setEmpresa] = useState<string>('')
+  const [contrato, setContrato] = useState<string>('')
+  const [textColor, setTextColor] = useState<string>('text-black'); // Estado para a cor do texto
+  const confirmRef = useRef<HTMLInputElement>(null);
+
+
+
+async function handleSubmit() {
+  // Garantir que não há dados vazios sendo enviados
+  if (!cpf || !email || !senha || !nome || !empresa || !contrato) {
+    toast.error("Preencha todos os campos");
+    return; // Parar a execução se algum campo estiver vazio
+  }
+
+  const data = {
+    cpf: cpf,
+    email: email,
+    senha: senha,
+    nome: nome,
+    empresa: empresa,
+    contrato: contrato,
+  };
+
+  try {
+    const response = await fetch('/api/atestados', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+  } catch (error) {
+    toast.error("Erro ao cadastrar: " + error);
+  }
+}
+
+
+
+
+
+  const handleConfirmChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setConfirm(e.target.value);
+  };
+
+  const handleConfirmBlur = () => {
+    if (senha !== confirm) {
+      toast.error("Senhas não conferem");
+      setConfirm('');
+      setTextColor('text-red-500');
+    } else {
+      setTextColor('text-black');
+    }
+  };
+
+
+  function handleCPF(e: React.ChangeEvent<HTMLInputElement>){
+    setCpf(e.target.value.replace(/\D+/g, ''));
+    setEmail(`${cpf}@sender.com.br`)
+
+  }
+
+
+
+
   return (
     <>
+      <Toaster />
       <div className="container mx-auto px-4">
         <div className="w-full lg:w-2/3 mx-auto">
           <div className="rounded-xl border border-gray-300 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800">
@@ -31,6 +106,8 @@ const SettingsUsers = () => {
                       className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-12 pr-4 text-gray-800 focus:border-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:border-blue-500"
                       type="number"
                       placeholder="00000000000"
+                      value={cpf}
+                      onChange={(e) => handleCPF(e)}
                     />
                   </div>
                 </div>
@@ -48,6 +125,8 @@ const SettingsUsers = () => {
                       className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-12 pr-4 text-gray-800 focus:border-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:border-blue-500"
                       type="text"
                       placeholder="Nome do usuário"
+                      value={nome}
+                      onChange={(e) => { setNome(e.target.value) }}
                     />
                   </div>
                 </div>
@@ -69,8 +148,10 @@ const SettingsUsers = () => {
                       type="email"
                       name="emailAddress"
                       id="emailAddress"
-                      placeholder="cpf@e-mail.com.br"
-                      readOnly
+                      placeholder="cpf@sender,com.br"
+                      value={email}
+                    
+                     
                     />
                   </div>
                 </div>
@@ -94,6 +175,8 @@ const SettingsUsers = () => {
                       name="password"
                       id="password"
                       placeholder="*********"
+                      value={senha}
+                      onChange={(e) => { setSenha(e.target.value) }}
                     />
                   </div>
                 </div>
@@ -102,7 +185,7 @@ const SettingsUsers = () => {
                 {/* Campo de Confirmação de Senha */}
                 <div className="mb-6">
                   <label
-                    className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                    className="mb-2 block text-sm font-medium   text-gray-700 dark:text-gray-300"
                     htmlFor="confirmPassword"
                   >
                     Confirme sua senha
@@ -112,12 +195,13 @@ const SettingsUsers = () => {
                       <RiLockPasswordLine size={24} />
                     </span>
                     <input
-                      className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-12 pr-4 text-gray-800 focus:border-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:border-blue-500"
+                      className="w-full rounded-lg border border-gray-300 bg-white  py-2.5 pl-12 pr-4 text-gray-800 focus:border-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:border-blue-500"
                       type="password"
-                      name="confirmPassword"
-                      id="confirmPassword"
-                      placeholder="*********"
+                      value={confirm}
+                      onChange={handleConfirmChange}
+                      onBlur={handleConfirmBlur}
                     />
+
                   </div>
                 </div>
 
@@ -128,11 +212,15 @@ const SettingsUsers = () => {
                     Empresa
                   </label>
                   <div className="relative">
-                    <select className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-4 pr-8 text-gray-800 focus:border-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:border-blue-500">
-                      <option value="">Dikma</option>
-                      <option value="">Caex</option>
-                      <option value="">Ecoplus</option>
-                      <option value="">Dikmaq</option>
+                    <select
+                      className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-4 pr-8 text-gray-800 focus:border-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:border-blue-500"
+                      value={empresa}
+                      onChange={(e) => setEmpresa(e.target.value)}
+                    >
+                      <option value="Dikma">Dikma</option>
+                      <option value="Caex">Caex</option>
+                      <option value="Ecoplus">Ecoplus</option>
+                      <option value="Dikmaq">Dikmaq</option>
                     </select>
                   </div>
                 </div>
@@ -151,6 +239,8 @@ const SettingsUsers = () => {
                       className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-12 pr-4 text-gray-800 focus:border-blue-500 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:focus:border-blue-500"
                       type="text"
                       placeholder="Digite o nome do contrato"
+                      value={contrato}
+                      onChange={(e) => setContrato(e.target.value)}
                     />
                   </div>
                 </div>
@@ -167,7 +257,8 @@ const SettingsUsers = () => {
                   {/* Botão para salvar */}
                   <button
                     className="flex justify-center rounded-lg bg-blue-500 px-6 py-2 font-medium text-white hover:bg-blue-600"
-                    type="submit"
+                    type="button"
+                    onClick={(e) => { handleSubmit() }}
                   >
                     Save
                   </button>

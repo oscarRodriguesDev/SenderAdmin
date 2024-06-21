@@ -12,13 +12,13 @@ export async function GET(request:Request) {
 }
 
 
-// Rota POST para criar um novo usuário
+
 export async function POST(request: Request) {
   try {
-    const { cpf, email, nome, senha, empresa, contrato } = await request.json();
+    const { cpf, email, senha, nome,empresa,contrato } = await request.json();
 
     // Verifique se todos os campos obrigatórios estão presentes
-    if (!cpf || !email || !nome || !senha || !empresa || !contrato) {
+    if (!cpf  || !nome || !empresa || !contrato) {
       return NextResponse.json({ success: false, error: 'Missing required fields' }, { status: 400 });
     }
 
