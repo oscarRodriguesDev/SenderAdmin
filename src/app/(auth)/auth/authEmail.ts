@@ -1,8 +1,9 @@
 // authEmail.ts
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
-import { getDatabase, ref, get,set,remove } from 'firebase/database';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged,deleteUser,getIdToken} from "firebase/auth";
+import { getDatabase, ref, get,set,remove, } from 'firebase/database';
 import { redirect } from "next/navigation";
+
 
 // Configurações do Firebase
 const firebaseConfig = {
@@ -18,7 +19,7 @@ const firebaseConfig = {
 // Inicialize o Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
-const database = getDatabase(app);
+const database = getDatabase(app); 
 
 
 
@@ -309,12 +310,24 @@ export async function CreateUser(cpf: string, email: string, nome: string, senha
   }
 }
 
+
+
+
+
 //deletar dados do banco de dados
-export async function deleteUser(cpf:string){
+export async function deleteUsuario(cpf:string){
        try{
-        const sendSesmtRef = ref(database, `SendSesmt/${cpf}`);
-        remove(sendSesmtRef)
+      
+          const sendSesmtRef = ref(database, `SendSesmt/${cpf}`);
+          remove(sendSesmtRef)
+          
+        
        }catch(err){
         throw new Error(`Erro ao tentar remover usuario`);
        }
 }
+
+/* dados de usuario para testes:
+email:40744382670@sender.com.br
+senha:88211663
+*/

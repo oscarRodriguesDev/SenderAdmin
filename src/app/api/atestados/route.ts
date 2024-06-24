@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import {readAllData,CreateUser } from '@/app/(auth)/auth/authEmail';
-import { error } from 'console';
+
 // Rota GET para buscar dados
 export async function GET(request:Request) {
   const { searchParams } = new URL(request.url);

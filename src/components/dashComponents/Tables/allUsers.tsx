@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { FcViewDetails } from "react-icons/fc";
 import { TbFileDislike, TbFileLike } from "react-icons/tb";
 import { MdDelete } from "react-icons/md";
-import { getAuthStatus, updateData,notificar,deleteUser } from "@/app/(auth)/auth/authEmail";
+import { getAuthStatus, updateData,notificar,deleteUsuario } from "@/app/(auth)/auth/authEmail";
 import { Toaster,toast } from "sonner";
 
 interface dataProps {
@@ -99,6 +99,54 @@ const TableOne = () => {
     return <div>Error: {error}</div>;
   }
 
+
+
+
+
+  async function deleteUser(id: string) {
+    try {
+      const response = await fetch(`http://localhost:3000/api/delete/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      // Verifica se a requisição foi bem-sucedida (código de status 200)
+      if (!response.ok) {
+        throw new Error('Erro ao tentar deletar usuário');
+      }
+  
+      const data = await response.json(); // Aguarda a resposta em JSON
+      console.log(data.message); // Exibe a mensagem de sucesso da rota
+  
+    } catch (error) {
+      console.error('Erro ao deletar usuário:', error);
+    }
+  }
+  
+  
+  
+  
+  
+
+
+/* deletar usuario no auth */
+ function eraserUser(cpf:string){
+  try{
+     deleteUser('x9dDrIyrk7XC24VcTfxuKpBtPAC2')
+     //deleteUsuario(cpf)
+
+  }catch(err){
+    alert(err);
+  }
+}
+
+
+
+
+
+
   return (
     <div className="rounded-[10px] bg-white px-2 pb-2 pt-2 shadow-1 dark:bg-gray-dark dark:shadow-card">
       <Toaster/>
@@ -184,7 +232,7 @@ const TableOne = () => {
             <div className="flex items-center justify-center px-2 py-4 sm:flex">
               <p className="font-medium text-dark">
                 <MdDelete size={24}
-                onClick={()=>{deleteUser(item.CPF)}}
+                onClick={()=>{eraserUser(item.CPF)}}
                 />
                 </p>
             </div>
