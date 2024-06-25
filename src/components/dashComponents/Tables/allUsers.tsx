@@ -102,46 +102,34 @@ const TableOne = () => {
 
 
 
-
   async function deleteUser(id: string) {
     try {
-      const response = await fetch(`http://localhost:3000/api/delete/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}api/atestados/?id=${id}`, {
         method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
       });
   
-      // Verifica se a requisição foi bem-sucedida (código de status 200)
       if (!response.ok) {
-        throw new Error('Erro ao tentar deletar usuário');
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Erro ao tentar deletar usuário');
       }
   
-      const data = await response.json(); // Aguarda a resposta em JSON
-      console.log(data.message); // Exibe a mensagem de sucesso da rota
+      const data = await response.json(); 
+      console.log(data.message);
   
+      return data; 
     } catch (error) {
       console.error('Erro ao deletar usuário:', error);
+      throw new Error(`Erro ao deletar usuário: ${error}`);
     }
   }
   
-  
-  
-  
-  
-
-
-/* deletar usuario no auth */
- function eraserUser(cpf:string){
-  try{
-     deleteUser('x9dDrIyrk7XC24VcTfxuKpBtPAC2')
-     //deleteUsuario(cpf)
-
-  }catch(err){
-    alert(err);
+  async function eraserUser(cpf: string) {
+    try {
+      await deleteUser('841E0hSEo4WEemioOuPo5d3eoLe2');
+    } catch (err) {
+      console.log(err);
+    }
   }
-}
-
 
 
 
