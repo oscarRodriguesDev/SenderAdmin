@@ -125,7 +125,7 @@ const TableOne = () => {
   
   async function eraserUser(cpf: string) {
     try {
-      await deleteUser('841E0hSEo4WEemioOuPo5d3eoLe2');
+      await deleteUser('PL3UFF33loRja0G5B67E0ohvKrI2');
     } catch (err) {
       console.log(err);
     }

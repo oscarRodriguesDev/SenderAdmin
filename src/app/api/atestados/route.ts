@@ -6,7 +6,11 @@ import admin from 'firebase-admin';
 let adminApp: admin.app.App;
 
 export const initAdminApp = async () => {
-  adminApp = await initAdmin();
+  if (!adminApp) {
+    adminApp = await initAdmin();
+  }else{
+    adminApp = await initAdmin();
+  }
 };
 
 // Chamada em algum lugar do seu código para inicializar adminApp
@@ -45,6 +49,7 @@ export async function POST(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
+    
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
 
@@ -54,6 +59,7 @@ export async function DELETE(request: Request) {
 
     try {
       console.log(`Deleting user with ID: ${id}`);  // Log para depuração
+    
       await adminApp.auth().deleteUser(id);
       return NextResponse.json({ success: true, message: `User with ID ${id} deleted successfully` });
     } catch (error) {
@@ -65,3 +71,5 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ success: false, error: `Failed to process request: ${error}` }, { status: 500 });
   }
 }
+ 
+
