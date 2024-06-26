@@ -6,5 +6,6 @@ export interface AtestadosProps{
    contrato:string;
    empresa:string;
    aprovade:boolean;
+   userID:string;
    
   }

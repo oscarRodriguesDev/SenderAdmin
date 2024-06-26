@@ -14,6 +14,7 @@ interface dataProps {
   url: string;
   ultima_data: string;
   aprove: string;
+  userID:string;
 }
 
 export const fetchData = async (): Promise<dataProps[]> => {
@@ -102,9 +103,9 @@ const TableOne = () => {
 
 
 
-  async function deleteUser(cpf: string) {
+  async function deleteUser(uid: string) {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}api/atestados/?id=${cpf}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}api/atestados/?id=${uid}`, {
         method: 'DELETE',
       });
   
@@ -114,7 +115,7 @@ const TableOne = () => {
       }
   
       const data = await response.json(); 
-      console.log(data.message);
+      console.log(data);
   
       return data; 
     } catch (error) {
@@ -125,15 +126,16 @@ const TableOne = () => {
   
 
  
-  async function eraserUser(cpf: string) {
+  async function eraserUser(uid: string) {
     try {
-    await deleteUser(cpf)
+    await deleteUser(uid)
     toast.success('Usuario deletado com sucesso!')
-    //refresh
-      //window.location.href = "";
+      window.location.href = "";
+     
 
     } catch (err) {
       console.log(err);
+      toast.error('Ocorreu um erro ao tentar deletar o usuario')
     }
   }
 
@@ -170,6 +172,7 @@ const TableOne = () => {
           <div className="px-2 pb-3.5 text-center sm:block">
             <h5 className="text-sm font-medium uppercase xsm:text-base text-black">DEL</h5>
           </div>
+          
          
         </div>
 
@@ -202,6 +205,7 @@ const TableOne = () => {
               <p className="font-medium text-dark">{item.ultima_data}</p>
             </div>
           
+          
             <div className="flex items-center justify-center px-2 py-4 sm:flex">
               <p className="font-medium text-dark flex gap-3">
                 {/* Botão "Reprovado" */}
@@ -226,7 +230,7 @@ const TableOne = () => {
             <div className="flex items-center justify-center px-2 py-4 sm:flex">
               <p className="font-medium text-dark">
                 <MdDelete size={24}
-                onClick={()=>{eraserUser('vpk76UbZaid9N4PTxvIR4shnbJz2')}}
+                onClick={()=>{eraserUser(item.userID)}}
                 />
                 </p>
             </div>
