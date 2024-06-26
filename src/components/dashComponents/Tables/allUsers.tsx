@@ -102,9 +102,9 @@ const TableOne = () => {
 
 
 
-  async function deleteUser(id: string) {
+  async function deleteUser(cpf: string) {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}api/atestados/?id=${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}api/atestados/?id=${cpf}`, {
         method: 'DELETE',
       });
   
@@ -121,11 +121,17 @@ const TableOne = () => {
       console.error('Erro ao deletar usuário:', error);
       throw new Error(`Erro ao deletar usuário: ${error}`);
     }
-  }
+  } 
   
+
+ 
   async function eraserUser(cpf: string) {
     try {
-      await deleteUser('PL3UFF33loRja0G5B67E0ohvKrI2');
+    await deleteUser(cpf)
+    toast.success('Usuario deletado com sucesso!')
+    //refresh
+      //window.location.href = "";
+
     } catch (err) {
       console.log(err);
     }
@@ -220,7 +226,7 @@ const TableOne = () => {
             <div className="flex items-center justify-center px-2 py-4 sm:flex">
               <p className="font-medium text-dark">
                 <MdDelete size={24}
-                onClick={()=>{eraserUser(item.CPF)}}
+                onClick={()=>{eraserUser('vpk76UbZaid9N4PTxvIR4shnbJz2')}}
                 />
                 </p>
             </div>

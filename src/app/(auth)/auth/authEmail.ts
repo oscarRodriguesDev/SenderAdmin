@@ -5,6 +5,8 @@ import { getDatabase, ref, get,set,remove, } from 'firebase/database';
 import { redirect } from "next/navigation";
 
 
+
+
 // Configurações do Firebase
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY, 
@@ -17,9 +19,9 @@ const firebaseConfig = {
 };
 
 // Inicialize o Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth();
-const database = getDatabase(app); 
+export const APP = initializeApp(firebaseConfig);
+export const authConfig = getAuth();
+const database = getDatabase(APP); 
 
 
 
@@ -55,7 +57,7 @@ export async function userLogin(cpf: string, password: string): Promise<boolean>
     }
 
     // Tenta fazer o login
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const userCredential = await signInWithEmailAndPassword(authConfig, email, password);
     return true;
   } catch (error) {
     console.error("Erro ao fazer login:", error);
@@ -69,7 +71,7 @@ export async function userLogin(cpf: string, password: string): Promise<boolean>
 // Função para logout do usuário
 export async function userLogout(): Promise<boolean> {
   try {
-    await signOut(auth);
+    await signOut(authConfig);
     redirect('/');
     return true;
   } catch (error) {
@@ -88,7 +90,7 @@ export interface AuthStatus {
 // Função para obter o status de autenticação
 export async function getAuthStatus(): Promise<AuthStatus> {
   return new Promise((resolve, reject) => {
-    onAuthStateChanged(auth, async (user) => {
+    onAuthStateChanged(authConfig, async (user) => {
       if (user) {
         const email = user.email;
         let userName = null;
@@ -128,7 +130,7 @@ export async function getAuthStatus(): Promise<AuthStatus> {
 // Função para verificar se o usuário está logado
 export async function isUserLoggedIn(): Promise<boolean> {
   return new Promise((resolve) => {
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(authConfig, (user) => {
       resolve(!!user);
     });
   });
@@ -141,7 +143,7 @@ export async function readAllData(): Promise<{ sendSesmtData: any, currentUserUI
 
     get(sendSesmtRef).then((sendSesmtSnapshot) => {
       const sendSesmtData = sendSesmtSnapshot.exists() ? sendSesmtSnapshot.val() : null;
-      const currentUserUID = auth.currentUser ? auth.currentUser.uid : null;
+      const currentUserUID = authConfig.currentUser ? authConfig.currentUser.uid : null;
       resolve({ sendSesmtData, currentUserUID });
     }).catch((error) => {
       reject(error);
@@ -244,7 +246,7 @@ export async function notificar(cpf:string,status:string): Promise<void>{
 // Função para criar autenticação do usuario
 export async function createUserEmail(email: string, password: string): Promise<boolean> {
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const userCredential = await createUserWithEmailAndPassword(authConfig, email, password);
     return true;
   } catch (error) {
     console.error("Erro ao criar usuário:", error);
@@ -257,7 +259,7 @@ export async function createUserEmail(email: string, password: string): Promise<
 //opção de criação de usuário confirmando se ele ja existe no banco de dados
 export async function createUserAuthEmail(email: string, password: string): Promise<{ success: boolean; error?: string }> {
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const userCredential = await createUserWithEmailAndPassword(authConfig, email, password);
     console.log('vamos criar seu usuário!')
     return { success: true };
   } catch (error: any) {

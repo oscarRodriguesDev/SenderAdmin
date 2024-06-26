@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { readAllData, CreateUser } from '@/app/(auth)/auth/authEmail';
-import { initAdmin } from '@/app/(auth)/auth/admin/firebaseAdmin';
+import { readAllData, CreateUser,deleteUsuario } from '@/app/(auth)/auth/authEmail';
+import { initAdmin, eraserUser} from '@/app/(auth)/auth/admin/firebaseAdmin';
 import admin from 'firebase-admin';
 
 let adminApp: admin.app.App;
@@ -46,8 +46,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: false, error: `Failed to process request: ${error}` }, { status: 500 });
   }
 }
-
-export async function DELETE(request: Request) {
+//essa rota fica inativa nessa primeira versão 
+ export async function DELETE(request: Request) {
   try {
     
     const { searchParams } = new URL(request.url);
@@ -60,7 +60,9 @@ export async function DELETE(request: Request) {
     try {
       console.log(`Deleting user with ID: ${id}`);  // Log para depuração
     
-      await adminApp.auth().deleteUser(id);
+     await adminApp.auth().deleteUser(id);
+    // await eraserUser(id)
+
       return NextResponse.json({ success: true, message: `User with ID ${id} deleted successfully` });
     } catch (error) {
       console.error(`Error deleting user: ${error}`);  // Log do erro
@@ -70,6 +72,19 @@ export async function DELETE(request: Request) {
     console.error(`Error processing request: ${error}`);  // Log do erro
     return NextResponse.json({ success: false, error: `Failed to process request: ${error}` }, { status: 500 });
   }
-}
+} 
  
 
+//rota para deletar usuario pelo cpf
+
+
+/* export async function DELETE(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const id: string | any = searchParams.get('id');
+  try {
+    await deleteUsuario(id);
+    return NextResponse.json({ success: true, error: `User deleted in` }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json({ success: false, error: `Failed to delete user: ${error}` }, { status: 500 });
+  }
+} */
