@@ -103,9 +103,12 @@ const TableOne = () => {
 
 
 
-  async function deleteUser(uid: string) {
+  async function deleteUser(uid: string,cpf:string) {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}api/atestados/?id=${uid}`, {
+
+
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}api/atestados/?id=${uid}&cpf=${cpf}`, {
         method: 'DELETE',
       });
   
@@ -126,9 +129,9 @@ const TableOne = () => {
   
 
  
-  async function eraserUser(uid: string) {
+  async function eraserUser(uid: string,cpf:string) {
     try {
-    await deleteUser(uid)
+    await deleteUser(uid,cpf)
     toast.success('Usuario deletado com sucesso!')
       window.location.href = "";
      
@@ -230,7 +233,7 @@ const TableOne = () => {
             <div className="flex items-center justify-center px-2 py-4 sm:flex">
               <p className="font-medium text-dark">
                 <MdDelete size={24}
-                onClick={()=>{eraserUser(item.userID)}}
+                onClick={()=>{eraserUser(item.userID, item.CPF,)}}
                 />
                 </p>
             </div>

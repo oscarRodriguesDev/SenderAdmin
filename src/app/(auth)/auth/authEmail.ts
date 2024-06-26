@@ -243,6 +243,7 @@ export async function notificar(cpf:string,status:string): Promise<void>{
 }
 }
 
+
 // Função para criar autenticação do usuario
 export async function createUserEmail(email: string, password: string): Promise<boolean> {
   try {
@@ -273,7 +274,29 @@ export async function createUserAuthEmail(email: string, password: string): Prom
       return { success: false, error: error.message };
     }
   }
-}
+} 
+
+
+ /*  export async function createUserAuthEmail(email: string, password: string): Promise<{ success: boolean; uid?: string; error?: string }> {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(authConfig, email, password);
+      console.log('Usuário criado com sucesso!');
+      
+      // Extraia o UID do usuário criado
+      const uid = userCredential.user?.uid;
+  
+      return { success: true, uid };
+    } catch (error: any) {
+      if (error.code === 'auth/email-already-in-use') {
+        console.log('E-mail já está em uso.');
+        return { success: false, error: 'E-mail já está em uso.' };
+      } else {
+        console.error('Erro ao criar usuário:', error.message);
+        return { success: false, error: error.message };
+      }
+    }
+  } */
+
 
 
 /// Função para salvar dados do usuário no banco de dados como strings JSON

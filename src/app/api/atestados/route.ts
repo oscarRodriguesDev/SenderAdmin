@@ -52,6 +52,7 @@ export async function POST(request: Request) {
     
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
+    const cpf:string|any = searchParams.get('cpf');
 
     if (!id) {
       return NextResponse.json({ success: false, error: 'ID is required' }, { status: 400 });
@@ -61,7 +62,8 @@ export async function POST(request: Request) {
       console.log(`Deleting user with ID: ${id}`);  // Log para depuração
     
      await adminApp.auth().deleteUser(id);
-    // await eraserUser(id)
+     deleteUsuario(cpf)
+     
 
       return NextResponse.json({ success: true, message: `User with ID ${id} deleted successfully` });
     } catch (error) {
@@ -74,17 +76,3 @@ export async function POST(request: Request) {
   }
 } 
  
-
-//rota para deletar usuario pelo cpf
-
-
-/* export async function DELETE(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const id: string | any = searchParams.get('id');
-  try {
-    await deleteUsuario(id);
-    return NextResponse.json({ success: true, error: `User deleted in` }, { status: 200 });
-  } catch (error) {
-    return NextResponse.json({ success: false, error: `Failed to delete user: ${error}` }, { status: 500 });
-  }
-} */
