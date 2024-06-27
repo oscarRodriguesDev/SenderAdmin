@@ -274,10 +274,12 @@ export async function createUserAuthEmail(email: string, password: string): Prom
       return { success: false, error: error.message };
     }
   }
-} 
+}  
 
 
- /*  export async function createUserAuthEmail(email: string, password: string): Promise<{ success: boolean; uid?: string; error?: string }> {
+
+//função salva o usuario e retorna o user id para no cadastro do mesmo
+ export async function createUserAuthEmail2(email: string, password: string): Promise<{ success: boolean; uid?: string; error?: string }> {
     try {
       const userCredential = await createUserWithEmailAndPassword(authConfig, email, password);
       console.log('Usuário criado com sucesso!');
@@ -295,13 +297,20 @@ export async function createUserAuthEmail(email: string, password: string): Prom
         return { success: false, error: error.message };
       }
     }
-  } */
+  } 
 
 
+//tipagem para a funçaõ que tretorna a promessa do user salvo
+  interface CreateUserAuthEmailResponse {
+    success: boolean;
+    uid?: string;
+    error?: string;
+  }
+  
 
 /// Função para salvar dados do usuário no banco de dados como strings JSON
 export async function CreateUser(cpf: string, email: string, nome: string, senha: string, empresa: string, contrato: string): Promise<void> {
-  const permission = await createUserAuthEmail(email, senha);
+  const permission:CreateUserAuthEmailResponse = await createUserAuthEmail(email, senha);
   if (permission.success) {
     const sendSesmtRef = ref(database, `SendSesmt/${cpf}`);
     try {
@@ -315,6 +324,7 @@ export async function CreateUser(cpf: string, email: string, nome: string, senha
           contrato: contrato,
           url: '',
           ultima_data: '00/00/00',
+          userID:permission.uid
         };
 
         // Salva os dados como uma string JSON

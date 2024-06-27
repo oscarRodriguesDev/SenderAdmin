@@ -28,6 +28,7 @@ export async function GET(request: Request) {
   }
 }
 
+
 export async function POST(request: Request) {
   try {
     const { cpf, email, senha, nome, empresa, contrato } = await request.json();
@@ -46,6 +47,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: false, error: `Failed to process request: ${error}` }, { status: 500 });
   }
 }
+
+
+
 //essa rota fica inativa nessa primeira versão 
  export async function DELETE(request: Request) {
   try {

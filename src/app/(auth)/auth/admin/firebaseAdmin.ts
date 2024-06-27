@@ -1,6 +1,5 @@
 import admin from 'firebase-admin';
 
-
 let adminApp: admin.app.App;
 
 export const initAdminApp = async () => {
@@ -24,7 +23,7 @@ export async function getUserUidByEmail(email: string): Promise<string | null> {
     console.log("Fetching user by email:", email);
     const userRecord = await adminApp.auth().getUserByEmail(email);
     console.log("User record found:", userRecord);
-    return userRecord.uid;
+    return await userRecord.uid;
   } catch (error) {
     console.error(`Error getting user by email: ${error}`);
     return null;
@@ -81,3 +80,6 @@ export async function initAdmin() {
   };
   return createFirebaseAdminApp(params);
 }
+
+
+/* quem esta envolvido no save com uid: firebaseAdmin.ts, route.ts e authEmail.ts */
