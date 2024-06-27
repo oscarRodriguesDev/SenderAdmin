@@ -37,7 +37,7 @@ export const fetchData = async (): Promise<dataProps[]> => {
     }
   }
 
-  return result;
+  return result;  
 };
 
 

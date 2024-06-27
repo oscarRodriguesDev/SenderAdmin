@@ -20,13 +20,13 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
       
-          <AuthProvider>
         <ThemeProvider attribute="class">
+      <AuthProvider>
             <div>
               {children}
               </div>
-        </ThemeProvider>
           </AuthProvider>
+        </ThemeProvider>
        
       </body>
     </html>

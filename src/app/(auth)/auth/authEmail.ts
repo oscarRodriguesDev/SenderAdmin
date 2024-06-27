@@ -1,10 +1,9 @@
 // authEmail.ts
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged,deleteUser,getIdToken} from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged} from "firebase/auth";
 import { getDatabase, ref, get,set,remove, } from 'firebase/database';
 import { redirect } from "next/navigation";
-
-
+import { deprecate } from "util";
 
 
 // Configurações do Firebase
@@ -73,7 +72,6 @@ export async function userLogout(): Promise<boolean> {
   try {
     await signOut(authConfig);
     redirect('/');
-    return true;
   } catch (error) {
     console.error("Erro ao fazer logout:", error);
     return false;
@@ -94,8 +92,6 @@ export async function getAuthStatus(): Promise<AuthStatus> {
       if (user) {
         const email = user.email;
         let userName = null;
-
-        // Extrai o CPF do e-mail
         if (email) {
           const cpf = email.split('@')[0];
           const sendSesmtRef = ref(database, `SendSesmt/${cpf}`);
@@ -106,12 +102,11 @@ export async function getAuthStatus(): Promise<AuthStatus> {
             if (snapshot.exists()) {
               const userData = JSON.parse(snapshot.val());
               userName = userData.nome; // Supondo que a estrutura do nó contenha um campo "nome"
-              console.log(userName);
             } else {
-              console.error("CPF não encontrado no banco de dados.");
+              throw new Error("CPF não encontrado no banco de dados.");
             }
           } catch (error) {
-            console.error("Erro ao buscar o nome do usuário:", error);
+            throw new Error("Erro ao buscar o nome do usuário: "+ error);
           }
         }
 
@@ -161,6 +156,7 @@ export async function readDataByLabel(label: string): Promise<any> {
       const data = snapshot.exists() ? snapshot.val() : null;
       resolve(data);
     }).catch((error) => {
+      
       reject(error);
     });
   });
@@ -244,37 +240,39 @@ export async function notificar(cpf:string,status:string): Promise<void>{
 }
 
 
-// Função para criar autenticação do usuario
+deprecate
 export async function createUserEmail(email: string, password: string): Promise<boolean> {
   try {
     const userCredential = await createUserWithEmailAndPassword(authConfig, email, password);
     return true;
   } catch (error) {
-    console.error("Erro ao criar usuário:", error);
+    console.error("Erro na tentativa de criar novo usaurio", error);
     return false;
   }
 }
 
 
 
-//opção de criação de usuario sem o valor do uid setado no banco de dados
+/**
+ * @deprecated Esta função será removida em versões futuras. Use createUserAuthEmail2 em seu lugar.
+ */
 export async function createUserAuthEmail(email: string, password: string): Promise<{ success: boolean; error?: string }> {
   try {
     const userCredential = await createUserWithEmailAndPassword(authConfig, email, password);
-    console.log('vamos criar seu usuário!')
+    console.log('Vamos criar seu usuário!');
     return { success: true };
   } catch (error: any) {
     if (error.code === 'auth/email-already-in-use') {
-     //retornar o usuario no bnco de dados
-     console.log('usuário ja existe')
-       return {success: false}
+      // Retornar o usuário no banco de dados
+      console.log('Usuário já existe.');
+      return { success: false };
     } else {
-       //criar o usuario no banco de dados
-       console.log('Ocorreu um erro desconhecido ao tentar criar o usuario informado!')
+      // Criar o usuário no banco de dados
+      console.log('Ocorreu um erro desconhecido ao tentar criar o usuário informado!');
       return { success: false, error: error.message };
     }
   }
-}  
+}
 
 
 
@@ -373,3 +371,4 @@ export async function deleteUsuario(cpf:string){
 resumindo...
 sera um modelo de atestado para ela baixar, e um local para assinar ou colocar 
 carimbo*/
+

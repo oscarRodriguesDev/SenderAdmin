@@ -8,10 +8,7 @@ import SidebarItem from "./SidebarItem";
 import ClickOutside from "../ClickOutside";
 import useLocalStorage from "@/app/hooks/useLocalStorage";
 import { FaFileMedicalAlt } from "react-icons/fa";
-/* import { BsCalendar3 } from "react-icons/bs";
-import { PiUserCircleBold } from "react-icons/pi";
-import { GrConfigure } from "react-icons/gr";
-import { FaUsersLine } from "react-icons/fa6"; */
+
 
 
 interface SidebarProps {
