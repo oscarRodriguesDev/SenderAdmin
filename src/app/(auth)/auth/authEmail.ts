@@ -257,7 +257,7 @@ export async function createUserEmail(email: string, password: string): Promise<
 
 
 
-//opção de criação de usuário confirmando se ele ja existe no banco de dados
+//opção de criação de usuario sem o valor do uid setado no banco de dados
 export async function createUserAuthEmail(email: string, password: string): Promise<{ success: boolean; error?: string }> {
   try {
     const userCredential = await createUserWithEmailAndPassword(authConfig, email, password);
@@ -299,18 +299,16 @@ export async function createUserAuthEmail(email: string, password: string): Prom
     }
   } 
 
+interface CreateUserAuthEmailResponse {
+  success: boolean;
+  uid?: string;
+  error?: string;
+}
 
-//tipagem para a funçaõ que tretorna a promessa do user salvo
-  interface CreateUserAuthEmailResponse {
-    success: boolean;
-    uid?: string;
-    error?: string;
-  }
-  
 
 /// Função para salvar dados do usuário no banco de dados como strings JSON
 export async function CreateUser(cpf: string, email: string, nome: string, senha: string, empresa: string, contrato: string): Promise<void> {
-  const permission:CreateUserAuthEmailResponse = await createUserAuthEmail(email, senha);
+  const permission:CreateUserAuthEmailResponse = await createUserAuthEmail2(email, senha);
   if (permission.success) {
     const sendSesmtRef = ref(database, `SendSesmt/${cpf}`);
     try {
@@ -362,7 +360,16 @@ export async function deleteUsuario(cpf:string){
        }
 }
 
-/* dados de usuario para testes:
-email:40744382670@sender.com.br
-senha:88211663
-*/
+/* criar a função que vai verificar se o tempo de atestado ja
+ ultrapassou o prazo determinado, caso positivo tirar a visualização da imagem 
+ criar a forma como os dados ainda poderçao ser vistos por um tempo antes de serem apagados definivamente
+ criar uma forma de salvar os dados localmente
+ criar o modelo de atestado que a dr Yara vai utilizar e permitir impressão
+ na pratica deve conter
+ nome do paciente,
+ CID caso permitido,
+ data do atestado 
+ qtd de dias de afastamento
+resumindo...
+sera um modelo de atestado para ela baixar, e um local para assinar ou colocar 
+carimbo*/
