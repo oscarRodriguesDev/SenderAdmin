@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { FcViewDetails } from "react-icons/fc";
 import { TbFileDislike, TbFileLike } from "react-icons/tb";
 import { MdDelete } from "react-icons/md";
-import { getAuthStatus, updateData,notificar } from "@/app/(auth)/auth/authEmail";
+import { getAuthStatus, updateAprove,notificar, updateData } from "@/app/(auth)/auth/authEmail";
 import { Toaster,toast } from "sonner";
 
 interface dataProps {
@@ -36,11 +36,60 @@ export const fetchData = async (): Promise<dataProps[]> => {
       if (parsedData.aprove === 'aprovado') {
         result.push(parsedData);
       }
+
+    eraserIfPassed(parsedData.ultima_data,parsedData.CPF,parsedData.aprove)
+
     }
   }
 
   return result;
 };
+
+
+
+
+/* Função utilizada para limpar o status de aprovação do usuario */
+async function cleanAprove(cpf:string) {
+  try {
+  await updateAprove(cpf,'')
+  toast.success('Usuario deletado com sucesso!')
+    window.location.href = "";
+  } catch (err) {
+    console.log(err);
+    toast.error('Ocorreu um erro ao tentar deletar o usuario')
+  }
+}
+
+
+
+
+//função vai limpar o status de aprovado caso a data tenha vencido
+function eraserIfPassed(data: string,cpf:string,aprove:string): void {
+  const [dia, mes, ano] = data.split('/').map(Number);
+  const providedDate = new Date(ano, mes - 1, dia);
+  const currentDate = new Date();
+  const diffTime = currentDate.getTime() - providedDate.getTime();
+  
+  if (data!=='00/00/00' && aprove!=='') {
+     const diffDays = diffTime / (1000 * 60 * 60 * 24);
+     if(diffDays > 7) { //tempo para ficar aparecendo no painel
+       cleanAprove(cpf)
+       updateData(cpf)
+     }else{
+      //nada
+     }
+  }else if (data==='00/00/00'){
+    //cleanAprove(cpf)
+    updateAprove(cpf,'')
+  } 
+}
+
+
+
+
+
+
+
 
 
 const TableOne = () => {
@@ -74,7 +123,7 @@ const TableOne = () => {
 
   const handleButtonClick = async (cpf: string, aprove: string) => {
     try {
-      await updateData(cpf, aprove); // Assumindo que updateData é uma função assíncrona
+      await updateAprove(cpf, aprove); // Assumindo que updateData é uma função assíncrona
 
       // Atualiza o estado `data` após a atualização bem-sucedida
       const updatedData = data.map(item => {
@@ -100,22 +149,6 @@ const TableOne = () => {
   if (error) {
     return <div>Error: {error}</div>;
   }
-
-
- /* Função utilizada para limpar o status de aprovação do usuario */
-  async function cleanAprove(cpf:string) {
-    try {
-    await updateData(cpf,'')
-    toast.success('Usuario deletado com sucesso!')
-      window.location.href = "";
-    } catch (err) {
-      console.log(err);
-      toast.error('Ocorreu um erro ao tentar deletar o usuario')
-    }
-  }
-
-
-
 
 
   return (
@@ -161,6 +194,7 @@ const TableOne = () => {
               <div className="flex items-center justify-center px-2 py-4">
                 <p className="font-medium dark:text-slate-900">{item.CPF}</p>
               </div>
+              
             </div>
             <div className="flex items-center justify-center px-2 py-4">
               <p className="font-medium text-dark">{item.nome}</p>
@@ -179,6 +213,7 @@ const TableOne = () => {
             <div className="flex items-center justify-center px-2 py-4 sm:flex">
               <p className="font-medium text-dark">{item.ultima_data}</p>
             </div>
+               
           
           
             <div className="flex items-center justify-center px-2 py-4 sm:flex">

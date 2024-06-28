@@ -5,8 +5,9 @@ import { TbFileDislike, TbFileLike } from "react-icons/tb";
 import { MdDelete } from "react-icons/md";
 import {
   getAuthStatus,
-  updateData,
+  updateAprove,
   notificar,
+  updateData
 } from "@/app/(auth)/auth/authEmail";
 import { Toaster, toast } from "sonner";
 
@@ -77,7 +78,7 @@ const TableOne = () => {
 
   const handleButtonClick = async (cpf: string, aprove: string) => {
     try {
-      await updateData(cpf, aprove); // Assumindo que updateData é uma função assíncrona
+      await updateAprove(cpf, aprove); // Assumindo que updateData é uma função assíncrona
 
       // Atualiza o estado `data` após a atualização bem-sucedida
       const updatedData = data.map((item) => {
@@ -109,7 +110,8 @@ const TableOne = () => {
   /* Função utilizada para limpar o status de aprovação do usuario */
   async function cleanAprove(cpf: string) {
     try {
-      await updateData(cpf, "");
+      await updateAprove(cpf, "");
+      await updateData(cpf)
       toast.success("Usuario deletado com sucesso!");
       window.location.href = "";
     } catch (err) {
@@ -117,6 +119,7 @@ const TableOne = () => {
       toast.error("Ocorreu um erro ao tentar deletar o usuario");
     }
   }
+  
 
   return (
     <div className="rounded-[10px] bg-white px-2 pb-2 pt-2 shadow-1 dark:bg-gray-dark dark:shadow-card">

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
 import {
   getAuthStatus,
-  updateData,
+  updateAprove,
   notificar,
   deleteUsuario,
 } from "@/app/(auth)/auth/authEmail";

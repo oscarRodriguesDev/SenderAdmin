@@ -163,7 +163,7 @@ export async function readDataByLabel(label: string): Promise<any> {
 }
 
 //função altera o aprove do objeto
-export async function updateData(cpf: string, status: string): Promise<void> {
+export async function updateAprove(cpf: string, status: string): Promise<void> {
   const sendSesmtRef = ref(database, `SendSesmt/${cpf}`);
   
   try {
@@ -174,6 +174,32 @@ export async function updateData(cpf: string, status: string): Promise<void> {
         const parsedData = JSON.parse(sendSesmtData);
         parsedData.aprove = status ; // atualiza o aprove
         
+        // Salva os dados atualizados de volta no banco de dados
+        await set(sendSesmtRef, JSON.stringify(parsedData));
+      } else {
+        throw new Error(`Não foi encontrado nenhum dado para o CPF ${cpf}`);
+      }
+    } else {
+      throw new Error(`Não foi encontrado nenhum dado para o CPF ${cpf}`);
+    }
+  } catch (error) {
+    throw new Error(`${error} ocorreu ao tentaar alterar o valor no banco de dados`);
+  }
+}
+
+
+//alterar a ultima data para 00/00/00
+export async function updateData(cpf: string): Promise<void> {
+  const sendSesmtRef = ref(database, `SendSesmt/${cpf}`);
+  
+  try {
+    const sendSesmtSnapshot = await get(sendSesmtRef);
+    if (sendSesmtSnapshot.exists()) {
+      const sendSesmtData = sendSesmtSnapshot.val();
+      if (sendSesmtData) {
+        const parsedData = JSON.parse(sendSesmtData);
+        parsedData.ultima_data = '00/00/00' ; // atualiza o aprove
+      
         // Salva os dados atualizados de volta no banco de dados
         await set(sendSesmtRef, JSON.stringify(parsedData));
       } else {
@@ -362,9 +388,6 @@ export async function deleteUsuario(cpf:string){
 }
 
 
-
-
-
 /* criar a função que vai verificar se o tempo de atestado ja
  ultrapassou o prazo determinado, caso positivo tirar a visualização da imagem 
  criar a forma como os dados ainda poderçao ser vistos por um tempo antes de serem apagados definivamente
@@ -377,5 +400,10 @@ export async function deleteUsuario(cpf:string){
  qtd de dias de afastamento
 resumindo...
 sera um modelo de atestado para ela baixar, e um local para assinar ou colocar 
-carimbo*/
+carimbo
+preciso de um local para ver os atestados recebidos 
+criar um usuario que apesar de entrar nçao tem acesso a alterar dados no sistema
+ aoagar o registro da imagem com 12 dias
+ criar uma visualização de atestados recebidos
+*/
 
