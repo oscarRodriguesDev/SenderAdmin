@@ -32,6 +32,7 @@ const menuGroups = [
           { label: "Aprovados", route: "/aprovados" },
           { label: "Reprovados", route: "/reprovados" },
           { label: "Settings Users", route: "/editUser" },
+          { label: "Emitir Atestado", route: "/emission" },
         ], 
         
 
