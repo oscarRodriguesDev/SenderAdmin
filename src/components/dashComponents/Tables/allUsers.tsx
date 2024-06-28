@@ -43,7 +43,8 @@ const TableOne = () => {
   const [data, setData] = useState<dataProps[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [aprovado, setAprovado]=useState<string>()
+  const [userCPF,setUserCPF] = useState<string | any>();
+ 
 
   
 
@@ -51,6 +52,7 @@ const TableOne = () => {
     const checkAuthAndFetchData = async () => {
       try {
         const authStatus = await getAuthStatus();
+        setUserCPF(authStatus.email?.slice(0,11));
         if (authStatus.loggedIn === true) {
           const fetchedData = await fetchData();
           setData(fetchedData); // Define os dados obtidos do backend no estado local
@@ -69,26 +71,6 @@ const TableOne = () => {
   }, []);
   
 
-  const handleButtonClick = async (cpf: string, aprove: string) => {
-    try {
-      await updateData(cpf, aprove); // Assumindo que updateData é uma função assíncrona
-
-      // Atualiza o estado `data` após a atualização bem-sucedida
-      const updatedData = data.map(item => {
-        if (item.CPF === cpf) {
-           notificar(cpf,aprove)
-          return { ...item, aprove };
-        }
-        setAprovado(item.aprove)
-        return item;
-      });
-      setData(updatedData);
-      toast.success(`Atestado de ${cpf} ${aprove === 'aprovado' ? 'aprovado' : 'reprovado'}`);
-    } catch (error) {
-      console.log(`Erro ao atualizar dados: ${error}`);
-      // Lida com erro de atualização, se necessário
-    }
-  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -159,6 +141,7 @@ const TableOne = () => {
           <div className="px-2 pb-3.5 text-center">
             <h5 className="text-sm font-medium uppercase xsm:text-base text-black">Contrato</h5>
           </div>
+         
           <div className="px-2 pb-3.5 text-center sm:block">
             <h5 className="text-sm font-medium uppercase xsm:text-base text-black">DEL</h5>
           </div>
@@ -182,13 +165,29 @@ const TableOne = () => {
             <div className="flex items-center justify-center px-2 py-4">
               <p className="font-medium text-dark">{item.contrato}</p>
             </div>
-            <div className="flex items-center justify-center px-2 py-4 sm:flex">
+            {(item.CPF===userCPF)?(
+               <div className="flex items-center justify-center px-2 py-4 sm:flex">
+               <p className="font-medium text-dark">
+                 <MdDelete size={24}
+                 color='red'
+                 onClick={()=>{toast.error('Impossivel apagar o proprio usuario')}}
+                 />
+                 </p>
+             </div>
+ 
+            ):(
+              <div className="flex items-center justify-center px-2 py-4 sm:flex">
               <p className="font-medium text-dark">
                 <MdDelete size={24}
                 onClick={()=>{eraserUser(item.userID, item.CPF,)}}
                 />
                 </p>
             </div>
+
+            )
+            
+            }
+            
 
           </div>
         ))}
