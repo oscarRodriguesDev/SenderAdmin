@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { FcViewDetails } from "react-icons/fc";
 import { TbFileDislike, TbFileLike } from "react-icons/tb";
 import { MdDelete } from "react-icons/md";
-import { getAuthStatus, updateData,notificar,deleteUsuario } from "@/app/(auth)/auth/authEmail";
+import { getAuthStatus, updateData,notificar } from "@/app/(auth)/auth/authEmail";
 import { Toaster,toast } from "sonner";
 
 interface dataProps {
@@ -68,7 +68,6 @@ const TableOne = () => {
         setLoading(false); // Finaliza o carregamento, independentemente do resultado
       }
     };
-  
     checkAuthAndFetchData(); // Chama a função para buscar os dados no início
   }, []);
   
@@ -103,41 +102,12 @@ const TableOne = () => {
   }
 
 
-
-
-  async function deleteUser(uid: string,cpf:string) {
+ /* Função utilizada para limpar o status de aprovação do usuario */
+  async function cleanAprove(cpf:string) {
     try {
-
-
-
-      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}api/atestados/?id=${uid}&cpf=${cpf}`, {
-        method: 'DELETE',
-      });
-  
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Erro ao tentar deletar usuário');
-      }
-  
-      const data = await response.json(); 
-      console.log(data);
-  
-      return data; 
-    } catch (error) {
-      console.error('Erro ao deletar usuário:', error);
-      throw new Error(`Erro ao deletar usuário: ${error}`);
-    }
-  } 
-  
-
- 
-  async function eraserUser(uid: string,cpf:string) {
-    try {
-    await deleteUser(uid,cpf)
+    await updateData(cpf,'')
     toast.success('Usuario deletado com sucesso!')
       window.location.href = "";
-     
-
     } catch (err) {
       console.log(err);
       toast.error('Ocorreu um erro ao tentar deletar o usuario')
@@ -235,7 +205,7 @@ const TableOne = () => {
             <div className="flex items-center justify-center px-2 py-4 sm:flex">
               <p className="font-medium text-dark">
                 <MdDelete size={24}
-                onClick={()=>{eraserUser(item.userID, item.CPF,)}}
+                onClick={()=>{cleanAprove(item.CPF,)}}
                 />
                 </p>
             </div>

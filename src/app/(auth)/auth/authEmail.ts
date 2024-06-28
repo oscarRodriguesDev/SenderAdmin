@@ -240,7 +240,9 @@ export async function notificar(cpf:string,status:string): Promise<void>{
 }
 
 
-deprecate
+/**
+ * @deprecated Esta função será removida em versões futuras. Use createUserAuthEmail2 em seu lugar.
+ */
 export async function createUserEmail(email: string, password: string): Promise<boolean> {
   try {
     const userCredential = await createUserWithEmailAndPassword(authConfig, email, password);
@@ -358,6 +360,10 @@ export async function deleteUsuario(cpf:string){
         throw new Error(`Erro ao tentar remover usuario`);
        }
 }
+
+
+
+
 
 /* criar a função que vai verificar se o tempo de atestado ja
  ultrapassou o prazo determinado, caso positivo tirar a visualização da imagem 
