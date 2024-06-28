@@ -320,7 +320,8 @@ export async function CreateUser(cpf: string, email: string, nome: string, senha
           contrato: contrato,
           url: '',
           ultima_data: '00/00/00',
-          userID:permission.uid
+          userID:permission.uid,
+          aprove:'',
         };
 
         // Salva os dados como uma string JSON

@@ -1,7 +1,5 @@
 'use client'
 import { useEffect, useState } from "react";
-import { FcViewDetails } from "react-icons/fc";
-import { TbFileDislike, TbFileLike } from "react-icons/tb";
 import { MdDelete } from "react-icons/md";
 import { getAuthStatus, updateData,notificar,deleteUsuario } from "@/app/(auth)/auth/authEmail";
 import { Toaster,toast } from "sonner";
