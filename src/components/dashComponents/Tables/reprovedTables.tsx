@@ -38,7 +38,7 @@ export const fetchData = async (): Promise<dataProps[]> => {
       parsedData.CPF = key;
 
       // Filtra apenas os dados reprovados
-      if (parsedData.aprove === "reprovado") {
+      if (parsedData.aprove === "reprovado" || parsedData.aprove==='sended') {
         result.push(parsedData);
       }
     }
@@ -211,7 +211,11 @@ const TableOne = () => {
                   className={`border border-solid border-blue-400 rounded-full p-2 hover:bg-slate-400 ${
                     item.aprove == "aprovado" ? "bg-white" : "bg-amber-200"
                   }`}
-                  onClick={() => handleButtonClick(item.CPF, "reprovado")}
+                  onClick={() => {
+                    handleButtonClick(item.CPF, "reprovado")
+                    cleanAprove(item.CPF);
+
+                  }}
                 >
                   <TbFileDislike size={18} color={"#f93c3c"} />
                 </button>
