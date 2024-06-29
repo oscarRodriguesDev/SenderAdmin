@@ -236,6 +236,7 @@ const TableOne = () => {
             <div className="flex items-center justify-center px-2 py-4 sm:flex">
               <p className="font-medium text-dark">
                 <MdDelete
+                 className="cursor-pointer"
                   size={24}
                   onClick={() => {
                     cleanAprove(item.CPF);

@@ -304,15 +304,19 @@ export async function createUserAuthEmail(email: string, password: string): Prom
 
 
 
-//função salva o usuario e retorna o user id para no cadastro do mesmo
- export async function createUserAuthEmail2(email: string, password: string): Promise<{ success: boolean; uid?: string; error?: string }> {
+
+
+
+// Modifique a função para adicionar a verificação de habilitado
+export async function createUserAuthEmail2(email: string, password: string): Promise<{ success: boolean; uid?: string; error?: string }> {
+  const habilitado = await readCPF(email.slice(0, 11));
+
+  // Verifica se está habilitado
+  if (habilitado) {
     try {
       const userCredential = await createUserWithEmailAndPassword(authConfig, email, password);
       console.log('Usuário criado com sucesso!');
-      
-      // Extraia o UID do usuário criado
       const uid = userCredential.user?.uid;
-  
       return { success: true, uid };
     } catch (error: any) {
       if (error.code === 'auth/email-already-in-use') {
@@ -323,7 +327,12 @@ export async function createUserAuthEmail(email: string, password: string): Prom
         return { success: false, error: error.message };
       }
     }
-  } 
+  } else {
+    console.log('CPF não habilitado para criar usuário.');
+    return { success: false, error: 'CPF não habilitado para criar usuário.' };
+  }
+}
+
 
 interface CreateUserAuthEmailResponse {
   success: boolean;
@@ -335,7 +344,7 @@ interface CreateUserAuthEmailResponse {
 /// Função para salvar dados do usuário no banco de dados como strings JSON
 export async function CreateUser(cpf: string, email: string, nome: string, senha: string, empresa: string, contrato: string): Promise<void> {
   const permission:CreateUserAuthEmailResponse = await createUserAuthEmail2(email, senha);
-  if (permission.success) {
+  if (permission.success ) {
     const sendSesmtRef = ref(database, `SendSesmt/${cpf}`);
     try {
       const sendSesmtSnapshot = await get(sendSesmtRef);
@@ -371,6 +380,27 @@ export async function CreateUser(cpf: string, email: string, nome: string, senha
 }
 
 
+//verifica se o cpf esta habilitado para criar conta
+async function readCPF(cpf: string): Promise<boolean> {
+  const habilitadosRef = ref(database, `AuthorizedEmails/cpfs`);
+  try {
+    const habilitadosSnapshot = await get(habilitadosRef);
+    if (habilitadosSnapshot.exists()) {
+      const cpfsAutorizados = habilitadosSnapshot.val(); 
+      if (cpfsAutorizados.includes(cpf)) {
+        return true; 
+      } else {
+        return false;
+      }
+    } else {
+      return false; 
+    }
+  } catch (error) {
+    console.error('Erro ao ler dados:', error);
+    return false; 
+  }
+}
+
 
 
 
@@ -380,9 +410,9 @@ export async function deleteUsuario(cpf:string){
       
           const sendSesmtRef = ref(database, `SendSesmt/${cpf}`);
           remove(sendSesmtRef)
-          
+
         
-       }catch(err){
+       }catch(err){ 
         throw new Error(`Erro ao tentar remover usuario`);
        }
 }
