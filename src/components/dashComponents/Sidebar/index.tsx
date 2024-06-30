@@ -29,6 +29,7 @@ const menuGroups = [
         route: "#",
         children: [
           {label: "Usuarios Ativos",route: "/all"},
+          {label: "Recebidos",route: "/received"},
           { label: "Aprovados", route: "/aprovados" },
           { label: "Reprovados", route: "/reprovados" },
           { label: "Settings Users", route: "/editUser" },

@@ -38,7 +38,7 @@ export const fetchData = async (): Promise<dataProps[]> => {
       parsedData.CPF = key;
 
       // Filtra apenas os dados reprovados
-      if (parsedData.aprove === "reprovado") {
+      if (parsedData.aprove === "sended") {
         result.push(parsedData);
       }
     }
