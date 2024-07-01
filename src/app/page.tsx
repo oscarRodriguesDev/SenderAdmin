@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { getAuthStatus } from "./(auth)/auth/authEmail";
 import HomeDashboard from "./(aplication)/page";
@@ -26,7 +25,7 @@ export default function Home() {
     };
 
     checkAuthStatus();
-  }, []);
+  }, [estado]);
 
   return (
     <div>
