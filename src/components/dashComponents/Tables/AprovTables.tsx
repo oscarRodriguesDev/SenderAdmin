@@ -1,7 +1,6 @@
 'use client'
 import { useEffect, useState } from "react";
-import { FcViewDetails } from "react-icons/fc";
-import { TbFileDislike, TbFileLike } from "react-icons/tb";
+import { GrDocumentImage } from "react-icons/gr";import { TbFileDislike, TbFileLike } from "react-icons/tb";
 import { MdDelete } from "react-icons/md";
 import { getAuthStatus, updateAprove,notificar, updateData } from "@/app/(auth)/auth/authEmail";
 import { Toaster,toast } from "sonner";
@@ -79,7 +78,6 @@ function eraserIfPassed(data: string,cpf:string,aprove:string): void {
       //nada
      }
   }else if (data==='00/00/00'){
-    //cleanAprove(cpf)
     updateAprove(cpf,'')
   } 
 }
@@ -174,9 +172,9 @@ const TableOne = () => {
           <div className="px-2 pb-3.5 text-center sm:block">
             <h5 className="text-sm font-medium uppercase xsm:text-base text-black">Data</h5>
           </div>
-          <div className="px-2 pb-3.5 text-center sm:block">
+           <div className="px-2 pb-3.5 text-center sm:block">
             <h5 className="text-sm font-medium uppercase xsm:text-base text-black">Status</h5>
-          </div>
+          </div> 
           <div className="px-2 pb-3.5 text-center sm:block">
             <h5 className="text-sm font-medium uppercase xsm:text-base text-black">DEL</h5>
           </div>
@@ -207,7 +205,7 @@ const TableOne = () => {
             </div>
             <div className="flex items-center justify-center px-2 py-4 sm:flex">
               <p className="font-medium text-dark">
-                <a href={item.url} target="_blank"><FcViewDetails size={24} /></a>
+                <a href={item.url} target="_blank"><GrDocumentImage color = {'#00aa11'} size={24} /></a>
               </p>
             </div>
             <div className="flex items-center justify-center px-2 py-4 sm:flex">
@@ -218,7 +216,7 @@ const TableOne = () => {
           
             <div className="flex items-center justify-center px-2 py-4 sm:flex">
               <p className="font-medium text-dark flex gap-3">
-                {/* Botão "Reprovado" */}
+           
                 <button
                 title='Click para reprovar o atestado'
                   id='disapprov'
@@ -227,7 +225,6 @@ const TableOne = () => {
                   <TbFileDislike size={18} color={'#f93c3c'} />
                 </button>
 
-                {/* Botão "Aprovado" */}
                 <button
                  title='Click para aprovar o atestado'
                   id='approv'
@@ -236,7 +233,8 @@ const TableOne = () => {
                   <TbFileLike size={18} color={'#090'} />
                 </button>
               </p>
-            </div>
+            </div> 
+
             <div className="flex items-center justify-center px-2 py-4 sm:flex">
               <p className="font-medium text-dark">
                 <MdDelete size={24}

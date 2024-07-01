@@ -93,6 +93,7 @@ const TableOne = () => {
       toast.success(
         `Atestado de ${cpf} ${aprove === "aprovado" ? "aprovado" : "reprovado"}`
       );
+      window.location.href = "/received";
     } catch (error) {
       console.log(`Erro ao atualizar dados: ${error}`);
       // Lida com erro de atualização, se necessário
@@ -213,7 +214,7 @@ const TableOne = () => {
                   }`}
                   onClick={() => {
                     handleButtonClick(item.CPF, "reprovado")
-                    cleanAprove(item.CPF);
+                   
 
                   }}
                 >

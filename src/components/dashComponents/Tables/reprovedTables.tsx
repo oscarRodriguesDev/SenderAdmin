@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { FcViewDetails } from "react-icons/fc";
-import { TbFileDislike, TbFileLike } from "react-icons/tb";
+import { GrDocumentImage } from "react-icons/gr";
 import { MdDelete } from "react-icons/md";
 import {
   getAuthStatus,
@@ -125,7 +124,7 @@ const TableOne = () => {
     <div className="rounded-[10px] bg-white px-2 pb-2 pt-2 shadow-1 dark:bg-gray-dark dark:shadow-card">
       <Toaster />
       <div className="bg-slate-50 flex flex-col rounded-lg">
-        <div className="grid grid-cols-8 gap-1">
+        <div className="grid grid-cols-7 gap-1">
           <div className="px-2 pb-3.5">
             <h5 className="text-sm font-medium uppercase xsm:text-base text-black">
               CPF
@@ -156,11 +155,7 @@ const TableOne = () => {
               Data
             </h5>
           </div>
-          <div className="px-2 pb-3.5 text-center sm:block">
-            <h5 className="text-sm font-medium uppercase xsm:text-base text-black">
-              Status
-            </h5>
-          </div>
+         
           <div className="px-2 pb-3.5 text-center sm:block">
             <h5 className="text-sm font-medium uppercase xsm:text-base text-black">
               DEL
@@ -170,7 +165,7 @@ const TableOne = () => {
 
         {data.map((item, key) => (
           <div
-            className={`grid grid-cols-8 gap-1 ${
+            className={`grid grid-cols-7 gap-1 ${
               key === data.length - 1
                 ? ""
                 : "border-b border-stroke dark:border-dark-3"
@@ -194,7 +189,7 @@ const TableOne = () => {
             <div className="flex items-center justify-center px-2 py-4 sm:flex">
               <p className="font-medium text-dark">
                 <a href={item.url} target="_blank">
-                  <FcViewDetails size={24} />
+                 <GrDocumentImage color='#ff0000' size={24}  /> 
                 </a>
               </p>
             </div>
@@ -202,37 +197,7 @@ const TableOne = () => {
               <p className="font-medium text-dark">{item.ultima_data}</p>
             </div>
 
-            <div className="flex items-center justify-center px-2 py-4 sm:flex">
-              <p className="font-medium text-dark flex gap-3">
-                {/* Botão "Reprovado" */}
-                <button
-                  title="Click para reprovar o atestado"
-                  id="disapprov"
-                  className={`border border-solid border-blue-400 rounded-full p-2 hover:bg-slate-400 ${
-                    item.aprove === "aprovado"? "bg-white" : "bg-amber-200"
-                  }`}
-                  onClick={() => {
-                    handleButtonClick(item.CPF, "reprovado")
-                    cleanAprove(item.CPF);
-
-                  }}
-                >
-                  <TbFileDislike size={18} color={"#f93c3c"} />
-                </button>
-
-                {/* Botão "Aprovado" */}
-                <button
-                  title="Click para aprovar o atestado"
-                  id="approv"
-                  className={`border border-solid border-blue-400 rounded-full p-2 hover:bg-slate-400 ${
-                    item.aprove === "aprovado" ? "bg-amber-200" : "bg-white"
-                  }`}
-                  onClick={() => handleButtonClick(item.CPF, "aprovado")}
-                >
-                  <TbFileLike size={18} color={"#090"} />
-                </button>
-              </p>
-            </div>
+        
             <div className="flex items-center justify-center px-2 py-4 sm:flex">
               <p className="font-medium text-dark">
                 <MdDelete

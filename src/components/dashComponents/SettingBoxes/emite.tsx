@@ -65,9 +65,9 @@ const EmissionCertifield: React.FC = () => {
     const datainicial = formatDate(formData.startDate);
     const datafinal = formatDate(formData.endDate);
     const nameMount = formatDateName(formData.startDate);
-    const atestadoText = `Atesto para os devidos fins que o Sr(a) ${
+    const atestadoText = `Atesto para os devidos fins que o(a) Sr(a) ${
       formData.name
-    } necessista de  ${calculateDays(
+    } necessita de  ${calculateDays(
       formData.startDate,
       formData.endDate
     )} dias de repouso por motivo de doença  

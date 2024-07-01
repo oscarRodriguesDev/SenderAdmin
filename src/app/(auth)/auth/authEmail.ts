@@ -421,17 +421,6 @@ export async function deleteUsuario(cpf:string){
 /* criar a função que vai verificar se o tempo de atestado ja
  ultrapassou o prazo determinado, caso positivo tirar a visualização da imagem 
  criar a forma como os dados ainda poderçao ser vistos por um tempo antes de serem apagados definivamente
- criar uma forma de salvar os dados localmente
- criar o modelo de atestado que a dr Yara vai utilizar e permitir impressão
- na pratica deve conter
- nome do paciente,
- CID caso permitido,
- data do atestado 
- qtd de dias de afastamento
-resumindo...
-sera um modelo de atestado para ela baixar, e um local para assinar ou colocar 
-carimbo
-preciso de um local para ver os atestados recebidos 
 criar um usuario que apesar de entrar nçao tem acesso a alterar dados no sistema
  aoagar o registro da imagem com 12 dias
  criar uma visualização de atestados recebidos
