@@ -13,7 +13,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        trueGray: colors.trueGray,
+        trueGray: colors.neutral ,
         dark: {
           DEFAULT: "#111928",
           2: "#1F2A37",
