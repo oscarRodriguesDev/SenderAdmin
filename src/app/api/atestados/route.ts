@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { readAllData, CreateUser,deleteUsuario } from '@/app/(auth)/auth/authEmail';
-import { initAdmin, eraserUser} from '@/app/(auth)/auth/admin/firebaseAdmin';
+import { initAdmin} from '@/app/(auth)/auth/admin/firebaseAdmin';
 import admin from 'firebase-admin';
 
 let adminApp: admin.app.App;
@@ -28,7 +28,7 @@ export async function GET(request: Request) {
   }
 }
 
-
+/* post */
 export async function POST(request: Request) {
   try {
     const { cpf, email, senha, nome, empresa, contrato } = await request.json();
