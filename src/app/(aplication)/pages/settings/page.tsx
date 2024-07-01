@@ -1,5 +1,4 @@
 import Breadcrumb from "@/components/dashComponents/Breadcrumbs/Breadcrumb";
-
 import { Metadata } from "next";
 import DefaultLayout from "@/components/dashComponents/Layouts/DefaultLaout";
 import SettingBoxes from "@/components/dashComponents/SettingBoxes";
