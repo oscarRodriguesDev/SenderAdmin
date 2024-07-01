@@ -82,4 +82,3 @@ export async function initAdmin() {
 }
 
 
-/* quem esta envolvido no save com uid: firebaseAdmin.ts, route.ts e authEmail.ts */
