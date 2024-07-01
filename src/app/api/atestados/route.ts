@@ -1,22 +1,18 @@
 import { NextResponse } from 'next/server';
-import { readAllData, CreateUser,deleteUsuario } from '@/app/(auth)/auth/authEmail';
-import { initAdmin} from '@/app/(auth)/auth/admin/firebaseAdmin';
+import { readAllData, CreateUser, deleteUsuario } from '@/app/(auth)/auth/authEmail';
+import { initAdmin } from '@/app/(auth)/auth/admin/firebaseAdmin';
 import admin from 'firebase-admin';
 
 let adminApp: admin.app.App;
 
-export const initAdminApp = async () => {
+const initAdminApp = async () => {
   if (!adminApp) {
-    adminApp = await initAdmin();
-  }else{
     adminApp = await initAdmin();
   }
 };
 
-// Chamada em algum lugar do seu código para inicializar adminApp
-initAdminApp().then(() => {
-  // adminApp está pronto para uso aqui
-});
+// Inicializa adminApp quando o módulo é carregado
+initAdminApp();
 
 export async function GET(request: Request) {
   try {
@@ -48,35 +44,29 @@ export async function POST(request: Request) {
   }
 }
 
-
-
-//essa rota fica inativa nessa primeira versão 
- export async function DELETE(request: Request) {
+/* delete */
+export async function DELETE(request: Request) {
   try {
-    
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
-    const cpf:string|any = searchParams.get('cpf');
+    const cpf: string | any = searchParams.get('cpf');
 
     if (!id) {
       return NextResponse.json({ success: false, error: 'ID is required' }, { status: 400 });
     }
 
     try {
-      console.log(`Deleting user with ID: ${id}`);  // Log para depuração
-    
-     await adminApp.auth().deleteUser(id);
-     deleteUsuario(cpf)
-     
+      console.log(`Deleting user with ID: ${id}`);
+      await adminApp.auth().deleteUser(id);
+      await deleteUsuario(cpf);
 
       return NextResponse.json({ success: true, message: `User with ID ${id} deleted successfully` });
     } catch (error) {
-      console.error(`Error deleting user: ${error}`);  // Log do erro
+      console.error(`Error deleting user: ${error}`);
       return NextResponse.json({ success: false, error: `Failed to delete user: ${error}` }, { status: 500 });
     }
   } catch (error) {
-    console.error(`Error processing request: ${error}`);  // Log do erro
+    console.error(`Error processing request: ${error}`);
     return NextResponse.json({ success: false, error: `Failed to process request: ${error}` }, { status: 500 });
   }
-} 
- 
+}
