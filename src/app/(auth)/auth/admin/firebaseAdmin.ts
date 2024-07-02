@@ -70,7 +70,7 @@ export function createFirebaseAdminApp(params: FirebaseAdmin) {
     storageBucket: params.storageBucket,
   });
 }
-
+//para fazer o build
 export async function initAdmin() {
   const params = {
     projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID as string,
